@@ -1,11 +1,21 @@
-"use client"
+/* eslint-disable react-hooks/rules-of-hooks */
+"use client";
 
-import React from "react"
+import React from "react";
 
-import { useRef, useState, useEffect } from "react"
-import { motion, useScroll, useTransform, useSpring } from "framer-motion"
-import { Bot, Code, LineChart, Headphones, Calendar, ShoppingCart, FileText, Cog } from "lucide-react"
-import { ScrollIndicator } from "./scroll-indicator"
+import { useRef, useState, useEffect } from "react";
+import { motion, useScroll, useTransform, useSpring } from "framer-motion";
+import {
+  Bot,
+  Code,
+  LineChart,
+  Headphones,
+  Calendar,
+  ShoppingCart,
+  FileText,
+  Cog,
+} from "lucide-react";
+import { ScrollIndicator } from "./scroll-indicator";
 
 // Define services with icons
 const services = [
@@ -81,7 +91,7 @@ const services = [
     color: "bg-accent-700/30 text-white",
     iconColor: "text-white",
   },
-]
+];
 
 // Background decorative elements
 const decorativeElements = [
@@ -120,7 +130,7 @@ const decorativeElements = [
     color: "from-primary-500/5 to-accent-500/5",
     animation: { scale: [0.95, 1.05], duration: 8 },
   },
-]
+];
 
 // Grid pattern for background
 const GridPattern = () => {
@@ -128,15 +138,23 @@ const GridPattern = () => {
     <div className="absolute inset-0 overflow-hidden opacity-[0.03] pointer-events-none">
       <div className="absolute inset-0 h-full w-full">
         {[...Array(20)].map((_, i) => (
-          <div key={`h-${i}`} className="absolute left-0 right-0 h-px bg-current" style={{ top: `${(i + 1) * 5}%` }} />
+          <div
+            key={`h-${i}`}
+            className="absolute left-0 right-0 h-px bg-current"
+            style={{ top: `${(i + 1) * 5}%` }}
+          />
         ))}
         {[...Array(20)].map((_, i) => (
-          <div key={`v-${i}`} className="absolute top-0 bottom-0 w-px bg-current" style={{ left: `${(i + 1) * 5}%` }} />
+          <div
+            key={`v-${i}`}
+            className="absolute top-0 bottom-0 w-px bg-current"
+            style={{ left: `${(i + 1) * 5}%` }}
+          />
         ))}
       </div>
     </div>
-  )
-}
+  );
+};
 
 // Hexagon SVG shape
 const Hexagon = ({ className }: { className?: string }) => (
@@ -148,78 +166,87 @@ const Hexagon = ({ className }: { className?: string }) => (
       strokeWidth="0"
     />
   </svg>
-)
+);
 
 export function ScrollServicesSection() {
-  const containerRef = useRef<HTMLDivElement>(null)
-  const [activeIndex, setActiveIndex] = useState(0)
-  const [viewportHeight, setViewportHeight] = useState(0)
-  const [showScrollIndicator, setShowScrollIndicator] = useState(true)
-  const [isMobile, setIsMobile] = useState(false)
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [viewportHeight, setViewportHeight] = useState(0);
+  const [showScrollIndicator, setShowScrollIndicator] = useState(true);
+  const [isMobile, setIsMobile] = useState(false);
 
   // Update viewport height and check if mobile on mount and resize
   useEffect(() => {
     const updateDimensions = () => {
-      setViewportHeight(window.innerHeight)
-      setIsMobile(window.innerWidth < 768) // 768px is typical md breakpoint
-    }
+      setViewportHeight(window.innerHeight);
+      setIsMobile(window.innerWidth < 768); // 768px is typical md breakpoint
+    };
 
-    updateDimensions()
-    window.addEventListener("resize", updateDimensions)
-    return () => window.removeEventListener("resize", updateDimensions)
-  }, [])
+    updateDimensions();
+    window.addEventListener("resize", updateDimensions);
+    return () => window.removeEventListener("resize", updateDimensions);
+  }, []);
 
   // Calculate total scroll height - exactly services.length times the viewport height
-  const totalScrollHeight = services.length * viewportHeight
+  const totalScrollHeight = services.length * viewportHeight;
 
   // Track scroll progress
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start start", `${totalScrollHeight}px end`],
-  })
+  });
 
   // Smooth scroll progress
   const smoothScrollProgress = useSpring(scrollYProgress, {
     stiffness: 100,
     damping: 30,
     restDelta: 0.001,
-  })
+  });
 
   // Wheel rotation based on scroll
-  const wheelRotation = useTransform(smoothScrollProgress, [0, 1], [0, 360])
+  const wheelRotation = useTransform(smoothScrollProgress, [0, 1], [0, 360]);
 
   // Background parallax effect
-  const backgroundY = useTransform(smoothScrollProgress, [0, 1], ["0%", "30%"])
+  const backgroundY = useTransform(smoothScrollProgress, [0, 1], ["0%", "30%"]);
 
   // Calculate progress and opacity/y values for each service
   const serviceProgresses = services.map((_, index) => {
-    return useTransform(smoothScrollProgress, [index / services.length, (index + 1) / services.length], [0, 1])
-  })
+    return useTransform(
+      smoothScrollProgress,
+      [index / services.length, (index + 1) / services.length],
+      [0, 1]
+    );
+  });
 
   // Define opacity and yPositions for service animations
-  const opacities = serviceProgresses.map((serviceProgress) => useTransform(serviceProgress, [0, 0.5, 1], [0, 1, 0]))
+  const opacities = serviceProgresses.map((serviceProgress) =>
+    useTransform(serviceProgress, [0, 0.5, 1], [0, 1, 0])
+  );
 
   const yPositions = serviceProgresses.map((serviceProgress) =>
-    useTransform(serviceProgress, [0, 0.5, 1], [100, 0, -100]),
-  )
+    useTransform(serviceProgress, [0, 0.5, 1], [100, 0, -100])
+  );
 
   // Update active index based on scroll position and control scroll indicator
   useEffect(() => {
     const unsubscribe = scrollYProgress.onChange((value) => {
       // Calculate which service should be active based on scroll progress
-      const newIndex = Math.min(services.length - 1, Math.floor(value * services.length))
-      setActiveIndex(newIndex)
+      const newIndex = Math.min(
+        services.length - 1,
+        Math.floor(value * services.length)
+      );
+      setActiveIndex(newIndex);
 
       // Hide scroll indicator after user has scrolled a bit
       if (value > 0.05) {
-        setShowScrollIndicator(false)
+        setShowScrollIndicator(false);
       } else {
-        setShowScrollIndicator(true)
+        setShowScrollIndicator(true);
       }
-    })
+    });
 
-    return () => unsubscribe()
-  }, [scrollYProgress])
+    return () => unsubscribe();
+  }, [scrollYProgress]);
 
   return (
     <section
@@ -245,16 +272,28 @@ export function ScrollServicesSection() {
               md: isMobile ? "w-24 h-24" : "w-40 h-40",
               lg: isMobile ? "w-32 h-32" : "w-64 h-64",
               xl: isMobile ? "w-48 h-48" : "w-96 h-96",
-            }[elem.size]
+            }[elem.size];
 
             // Determine shape component
-            let ShapeComponent
+            let ShapeComponent;
             if (elem.shape === "circle") {
-              ShapeComponent = <div className={`rounded-full bg-gradient-to-br ${elem.color} blur-3xl`} />
+              ShapeComponent = (
+                <div
+                  className={`rounded-full bg-gradient-to-br ${elem.color} blur-3xl`}
+                />
+              );
             } else if (elem.shape === "square") {
-              ShapeComponent = <div className={`rounded-lg bg-gradient-to-br ${elem.color} blur-3xl`} />
+              ShapeComponent = (
+                <div
+                  className={`rounded-lg bg-gradient-to-br ${elem.color} blur-3xl`}
+                />
+              );
             } else if (elem.shape === "hexagon") {
-              ShapeComponent = <Hexagon className={`text-gradient-to-br ${elem.color} blur-3xl`} />
+              ShapeComponent = (
+                <Hexagon
+                  className={`text-gradient-to-br ${elem.color} blur-3xl`}
+                />
+              );
             }
 
             return (
@@ -271,17 +310,17 @@ export function ScrollServicesSection() {
               >
                 {ShapeComponent}
               </motion.div>
-            )
+            );
           })}
 
           {/* Floating particles - fewer on mobile */}
           <div className="absolute inset-0">
             {[...Array(isMobile ? 15 : 30)].map((_, i) => {
-              const size = Math.random() * 4 + 2
-              const initialX = Math.random() * 100
-              const initialY = Math.random() * 100
-              const duration = Math.random() * 20 + 10
-              const delay = Math.random() * 5
+              const size = Math.random() * 4 + 2;
+              const initialX = Math.random() * 100;
+              const initialY = Math.random() * 100;
+              const duration = Math.random() * 20 + 10;
+              const delay = Math.random() * 5;
 
               return (
                 <motion.div
@@ -304,12 +343,15 @@ export function ScrollServicesSection() {
                     ease: "easeInOut",
                   }}
                 />
-              )
+              );
             })}
           </div>
 
           {/* Animated lines - simplified on mobile */}
-          <svg className="absolute inset-0 w-full h-full opacity-10" xmlns="http://www.w3.org/2000/svg">
+          <svg
+            className="absolute inset-0 w-full h-full opacity-10"
+            xmlns="http://www.w3.org/2000/svg"
+          >
             <motion.path
               d="M0,100 Q250,0 500,100 T1000,100"
               fill="none"
@@ -317,7 +359,11 @@ export function ScrollServicesSection() {
               strokeWidth={isMobile ? "1" : "2"}
               initial={{ pathLength: 0, opacity: 0 }}
               animate={{ pathLength: 1, opacity: 0.5 }}
-              transition={{ duration: 5, repeat: Number.POSITIVE_INFINITY, repeatType: "loop" }}
+              transition={{
+                duration: 5,
+                repeat: Number.POSITIVE_INFINITY,
+                repeatType: "loop",
+              }}
             />
             {!isMobile && (
               <motion.path
@@ -327,19 +373,48 @@ export function ScrollServicesSection() {
                 strokeWidth="2"
                 initial={{ pathLength: 0, opacity: 0 }}
                 animate={{ pathLength: 1, opacity: 0.5 }}
-                transition={{ duration: 5, delay: 1, repeat: Number.POSITIVE_INFINITY, repeatType: "loop" }}
+                transition={{
+                  duration: 5,
+                  delay: 1,
+                  repeat: Number.POSITIVE_INFINITY,
+                  repeatType: "loop",
+                }}
               />
             )}
             <defs>
               <linearGradient id="gradient1" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" stopColor="hsl(var(--primary-500))" stopOpacity="0.2" />
-                <stop offset="50%" stopColor="hsl(var(--accent-500))" stopOpacity="0.5" />
-                <stop offset="100%" stopColor="hsl(var(--primary-500))" stopOpacity="0.2" />
+                <stop
+                  offset="0%"
+                  stopColor="hsl(var(--primary-500))"
+                  stopOpacity="0.2"
+                />
+                <stop
+                  offset="50%"
+                  stopColor="hsl(var(--accent-500))"
+                  stopOpacity="0.5"
+                />
+                <stop
+                  offset="100%"
+                  stopColor="hsl(var(--primary-500))"
+                  stopOpacity="0.2"
+                />
               </linearGradient>
               <linearGradient id="gradient2" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" stopColor="hsl(var(--accent-500))" stopOpacity="0.2" />
-                <stop offset="50%" stopColor="hsl(var(--primary-500))" stopOpacity="0.5" />
-                <stop offset="100%" stopColor="hsl(var(--accent-500))" stopOpacity="0.2" />
+                <stop
+                  offset="0%"
+                  stopColor="hsl(var(--accent-500))"
+                  stopOpacity="0.2"
+                />
+                <stop
+                  offset="50%"
+                  stopColor="hsl(var(--primary-500))"
+                  stopOpacity="0.5"
+                />
+                <stop
+                  offset="100%"
+                  stopColor="hsl(var(--accent-500))"
+                  stopOpacity="0.2"
+                />
               </linearGradient>
             </defs>
           </svg>
@@ -359,8 +434,8 @@ export function ScrollServicesSection() {
               Our <span className="gradient-text">AI-Powered</span> Services
             </h2>
             <p className="text-sm md:text-base lg:text-lg text-foreground/70">
-              We offer a comprehensive suite of automation solutions designed to streamline your business operations and
-              boost productivity.
+              We offer a comprehensive suite of automation solutions designed to
+              streamline your business operations and boost productivity.
             </p>
           </motion.div>
 
@@ -371,8 +446,8 @@ export function ScrollServicesSection() {
               <div className="relative h-[40vh] flex items-center mb-4">
                 {services.map((service, index) => {
                   // Calculate opacity and y position for each service
-                  const opacity = opacities[index]
-                  const y = yPositions[index]
+                  const opacity = opacities[index];
+                  const y = yPositions[index];
 
                   return (
                     <motion.div
@@ -381,25 +456,37 @@ export function ScrollServicesSection() {
                       style={{ opacity, y }}
                     >
                       <div className="backdrop-blur-sm bg-background/30 p-4 rounded-xl border border-border/10">
-                        <div className={`w-10 h-10 rounded-lg ${service.color} flex items-center justify-center mb-3`}>
+                        <div
+                          className={`w-10 h-10 rounded-lg ${service.color} flex items-center justify-center mb-3`}
+                        >
                           {React.createElement(service.icon, {
                             className: "h-5 w-5",
                           })}
                         </div>
-                        <h3 className="text-xl font-bold mb-2">{service.title}</h3>
-                        <p className="text-sm text-foreground/70">{service.description}</p>
+                        <h3 className="text-xl font-bold mb-2">
+                          {service.title}
+                        </h3>
+                        <p className="text-sm text-foreground/70">
+                          {service.description}
+                        </p>
                       </div>
                     </motion.div>
-                  )
+                  );
                 })}
               </div>
 
               {/* Wheel - bottom half */}
               <div className="relative h-[30vh] flex items-center justify-center">
                 {/* Rotating wheel - smaller on mobile */}
-                <motion.div className="relative w-[250px] h-[250px]" style={{ rotate: wheelRotation }}>
+                <motion.div
+                  className="relative w-[250px] h-[250px]"
+                  style={{ rotate: wheelRotation }}
+                >
                   {/* Wheel background circle */}
-                  <svg className="absolute inset-0 w-full h-full" viewBox="0 0 250 250">
+                  <svg
+                    className="absolute inset-0 w-full h-full"
+                    viewBox="0 0 250 250"
+                  >
                     <motion.circle
                       cx="125"
                       cy="125"
@@ -415,15 +502,15 @@ export function ScrollServicesSection() {
                   {/* Icons on the wheel */}
                   {services.map((service, index) => {
                     // Calculate position on the wheel
-                    const angle = (index * 360) / services.length
-                    const radian = (angle * Math.PI) / 180
-                    const radius = 100 // Half of wheel width for mobile
+                    const angle = (index * 360) / services.length;
+                    const radian = (angle * Math.PI) / 180;
+                    const radius = 100; // Half of wheel width for mobile
 
-                    const x = Math.cos(radian) * radius
-                    const y = Math.sin(radian) * radius
+                    const x = Math.cos(radian) * radius;
+                    const y = Math.sin(radian) * radius;
 
                     // Determine if this is the active icon
-                    const isActive = index === activeIndex
+                    const isActive = index === activeIndex;
 
                     return (
                       <motion.div
@@ -436,7 +523,8 @@ export function ScrollServicesSection() {
                           top: `calc(50% + ${y}px)`,
                           width: "40px",
                           height: "40px",
-                          transition: "all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)",
+                          transition:
+                            "all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)",
                         }}
                       >
                         {!isActive &&
@@ -444,20 +532,23 @@ export function ScrollServicesSection() {
                             className: "h-5 w-5",
                           })}
                       </motion.div>
-                    )
+                    );
                   })}
 
                   {/* Connecting lines from center to each icon */}
-                  <svg className="absolute inset-0 w-full h-full" viewBox="0 0 250 250">
+                  <svg
+                    className="absolute inset-0 w-full h-full"
+                    viewBox="0 0 250 250"
+                  >
                     {services.map((_, index) => {
-                      const angle = (index * 360) / services.length
-                      const radian = (angle * Math.PI) / 180
-                      const radius = 100
-                      const x = Math.cos(radian) * radius
-                      const y = Math.sin(radian) * radius
+                      const angle = (index * 360) / services.length;
+                      const radian = (angle * Math.PI) / 180;
+                      const radius = 100;
+                      const x = Math.cos(radian) * radius;
+                      const y = Math.sin(radian) * radius;
 
-                      const isActive = index === activeIndex
-                      const opacity = isActive ? 0.3 : 0.1
+                      const isActive = index === activeIndex;
+                      const opacity = isActive ? 0.3 : 0.1;
 
                       return (
                         <motion.line
@@ -471,7 +562,7 @@ export function ScrollServicesSection() {
                           strokeWidth={isActive ? 2 : 1}
                           strokeDasharray={isActive ? "none" : "5 5"}
                         />
-                      )
+                      );
                     })}
                   </svg>
                 </motion.div>
@@ -505,7 +596,9 @@ export function ScrollServicesSection() {
                         {React.createElement(services[activeIndex].icon, {
                           className: `h-8 w-8 ${services[activeIndex].iconColor} mb-1`,
                         })}
-                        <span className="text-xs font-medium text-center px-1">{services[activeIndex].title}</span>
+                        <span className="text-xs font-medium text-center px-1">
+                          {services[activeIndex].title}
+                        </span>
                       </motion.div>
                     </div>
                   </motion.div>
@@ -519,8 +612,8 @@ export function ScrollServicesSection() {
               <div className="relative h-[50vh] flex items-center">
                 {services.map((service, index) => {
                   // Calculate opacity and y position for each service
-                  const opacity = opacities[index]
-                  const y = yPositions[index]
+                  const opacity = opacities[index];
+                  const y = yPositions[index];
 
                   return (
                     <motion.div
@@ -529,16 +622,22 @@ export function ScrollServicesSection() {
                       style={{ opacity, y }}
                     >
                       <div className="max-w-lg backdrop-blur-sm bg-background/30 p-6 rounded-xl border border-border/10">
-                        <div className={`w-12 h-12 rounded-lg ${service.color} flex items-center justify-center mb-4`}>
+                        <div
+                          className={`w-12 h-12 rounded-lg ${service.color} flex items-center justify-center mb-4`}
+                        >
                           {React.createElement(service.icon, {
                             className: "h-6 w-6",
                           })}
                         </div>
-                        <h3 className="text-2xl font-bold mb-4">{service.title}</h3>
-                        <p className="text-foreground/70">{service.description}</p>
+                        <h3 className="text-2xl font-bold mb-4">
+                          {service.title}
+                        </h3>
+                        <p className="text-foreground/70">
+                          {service.description}
+                        </p>
                       </div>
                     </motion.div>
-                  )
+                  );
                 })}
               </div>
 
@@ -550,7 +649,10 @@ export function ScrollServicesSection() {
                   style={{ rotate: wheelRotation }}
                 >
                   {/* Wheel background circle */}
-                  <svg className="absolute inset-0 w-full h-full" viewBox="0 0 400 400">
+                  <svg
+                    className="absolute inset-0 w-full h-full"
+                    viewBox="0 0 400 400"
+                  >
                     <motion.circle
                       cx="200"
                       cy="200"
@@ -566,15 +668,15 @@ export function ScrollServicesSection() {
                   {/* Icons on the wheel */}
                   {services.map((service, index) => {
                     // Calculate position on the wheel
-                    const angle = (index * 360) / services.length
-                    const radian = (angle * Math.PI) / 180
-                    const radius = 150 // Half of wheel width
+                    const angle = (index * 360) / services.length;
+                    const radian = (angle * Math.PI) / 180;
+                    const radius = 150; // Half of wheel width
 
-                    const x = Math.cos(radian) * radius
-                    const y = Math.sin(radian) * radius
+                    const x = Math.cos(radian) * radius;
+                    const y = Math.sin(radian) * radius;
 
                     // Determine if this is the active icon
-                    const isActive = index === activeIndex
+                    const isActive = index === activeIndex;
 
                     return (
                       <motion.div
@@ -587,7 +689,8 @@ export function ScrollServicesSection() {
                           top: `calc(50% + ${y}px)`,
                           width: "60px",
                           height: "60px",
-                          transition: "all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)",
+                          transition:
+                            "all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)",
                         }}
                       >
                         {!isActive &&
@@ -595,20 +698,23 @@ export function ScrollServicesSection() {
                             className: "h-6 w-6",
                           })}
                       </motion.div>
-                    )
+                    );
                   })}
 
                   {/* Connecting lines from center to each icon */}
-                  <svg className="absolute inset-0 w-full h-full" viewBox="0 0 400 400">
+                  <svg
+                    className="absolute inset-0 w-full h-full"
+                    viewBox="0 0 400 400"
+                  >
                     {services.map((_, index) => {
-                      const angle = (index * 360) / services.length
-                      const radian = (angle * Math.PI) / 180
-                      const radius = 150
-                      const x = Math.cos(radian) * radius
-                      const y = Math.sin(radian) * radius
+                      const angle = (index * 360) / services.length;
+                      const radian = (angle * Math.PI) / 180;
+                      const radius = 150;
+                      const x = Math.cos(radian) * radius;
+                      const y = Math.sin(radian) * radius;
 
-                      const isActive = index === activeIndex
-                      const opacity = isActive ? 0.3 : 0.1
+                      const isActive = index === activeIndex;
+                      const opacity = isActive ? 0.3 : 0.1;
 
                       return (
                         <motion.line
@@ -622,7 +728,7 @@ export function ScrollServicesSection() {
                           strokeWidth={isActive ? 2 : 1}
                           strokeDasharray={isActive ? "none" : "5 5"}
                         />
-                      )
+                      );
                     })}
                   </svg>
                 </motion.div>
@@ -656,7 +762,9 @@ export function ScrollServicesSection() {
                         {React.createElement(services[activeIndex].icon, {
                           className: `h-12 w-12 ${services[activeIndex].iconColor} mb-2`,
                         })}
-                        <span className="text-xs font-medium text-center">{services[activeIndex].title}</span>
+                        <span className="text-xs font-medium text-center">
+                          {services[activeIndex].title}
+                        </span>
                       </motion.div>
                     </div>
                   </motion.div>
@@ -681,5 +789,5 @@ export function ScrollServicesSection() {
       {/* Scroll indicator */}
       {showScrollIndicator && <ScrollIndicator fadeOutAfter={0.05} />}
     </section>
-  )
+  );
 }
