@@ -38,7 +38,6 @@ export function HeroSection() {
               transition={{ duration: 0.5, delay: 0.3 }}
               className="text-4xl md:text-5xl lg:text-[55px] font-bold leading-tight"
             >
-              Streamline Your Business with <br />
               <span className="gradient-text">
                 <TypewriterEffect />
               </span>
@@ -48,11 +47,11 @@ export function HeroSection() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.4 }}
-              className="text-lg text-foreground/80 max-w-xl"
+              className="text-base md:text-lg text-foreground/80 max-w-xl"
             >
-              Obliquepath helps small to mid-sized businesses save time and
-              boost productivity with custom AI-powered tools that automate
-              repetitive tasks and enhance customer interactions.
+              Obliquepath helps businesses streamline operations with smart AI
+              automation solutions — saving time, boosting productivity,
+              and driving growth.
             </motion.p>
 
             <motion.div

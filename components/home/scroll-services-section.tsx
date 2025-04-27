@@ -431,11 +431,15 @@ export function ScrollServicesSection() {
             className="text-center max-w-3xl mx-auto mb-8 md:mb-16"
           >
             <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-3 md:mb-4">
-              Our <span className="gradient-text">AI-Powered</span> Services
+              <span className="gradient-text">What We Do</span>
             </h2>
             <p className="text-sm md:text-base lg:text-lg text-foreground/70">
-              We offer a comprehensive suite of automation solutions designed to
-              streamline your business operations and boost productivity.
+              At Obliquepath, we specialize in building smart automation systems
+              that make running your business easier, faster, and more
+              efficient. <br />
+              <span className="gradient-text font-bold mt-2">
+                Here&apos;s how we help:
+              </span>
             </p>
           </motion.div>
 

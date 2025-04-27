@@ -1,3 +1,6 @@
+@import url(https://fonts.googleapis.com/css?family=Inter:100,200,300,regular,500,600,700,800,900,100italic,200italic,300italic,italic,500italic,600italic,700italic,800italic,900italic);
+@import url(https://fonts.googleapis.com/css?family=Fira+Code:300,regular,500,600,700);
+@import url(https://fonts.googleapis.com/css?family=Poppins:100,100italic,200,200italic,300,300italic,regular,italic,500,500italic,600,600italic,700,700italic,800,800italic,900,900italic);
 @import "tailwindcss";
 @import "tw-animate-css";
 
@@ -167,6 +170,21 @@
   }
 }
 
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: Inter, sans-serif;
+}
+p,
+span {
+  font-family: Poppins, sans-serif;
+}
+a {
+  font-family: Fira Code, monospace;
+}
 /* Gradient Text */
 .gradient-text {
   @apply bg-clip-text text-transparent bg-gradient-to-r from-primary-400 to-accent-500 bg-[length:200%_auto];

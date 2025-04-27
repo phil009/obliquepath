@@ -26,13 +26,11 @@ export function TypewriterEffect({
         }}
         onInit={(typewriter) => {
           typewriter
-            .typeString("Tineatlgi Nuaomtoetn")
+            .typeString("Automate. ")
             .pauseFor(delayAfterComplete)
-            .deleteAll()
-            .typeString("Mtaoneuitl Tgnitneoa")
+            .typeString("Accelerate. ")
             .pauseFor(delayAfterComplete)
-            .deleteAll()
-            .typeString("Intelligent Automation")
+            .typeString("Transform.")
             .start();
         }}
       />
