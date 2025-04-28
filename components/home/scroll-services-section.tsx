@@ -1,10 +1,9 @@
-/* eslint-disable react-hooks/rules-of-hooks */
 "use client";
 
 import React from "react";
 
 import { useRef, useState, useEffect } from "react";
-import { motion, useScroll, useTransform, useSpring } from "framer-motion";
+import { motion, useAnimation, AnimatePresence } from "framer-motion";
 import {
   Bot,
   Code,
@@ -15,7 +14,7 @@ import {
   FileText,
   Cog,
 } from "lucide-react";
-import { ScrollIndicator } from "./scroll-indicator";
+import { useInView } from "framer-motion";
 
 // Define services with icons
 const services = [
@@ -135,7 +134,7 @@ const decorativeElements = [
 // Grid pattern for background
 const GridPattern = () => {
   return (
-    <div className="absolute inset-0 overflow-hidden opacity-[0.03] pointer-events-none">
+    <div className="absolute inset-0 overflow-hidden opacity-[0.3] pointer-events-none">
       <div className="absolute inset-0 h-full w-full">
         {[...Array(20)].map((_, i) => (
           <div
@@ -168,17 +167,16 @@ const Hexagon = ({ className }: { className?: string }) => (
   </svg>
 );
 
-export function ScrollServicesSection() {
-  const containerRef = useRef<HTMLDivElement>(null);
+export function AutoServicesSection() {
   const [activeIndex, setActiveIndex] = useState(0);
-  const [viewportHeight, setViewportHeight] = useState(0);
-  const [showScrollIndicator, setShowScrollIndicator] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
+  const sectionRef = useRef<HTMLElement>(null);
+  const isInView = useInView(sectionRef, { once: false, amount: 0.2 });
+  const wheelControls = useAnimation();
 
   // Update viewport height and check if mobile on mount and resize
   useEffect(() => {
     const updateDimensions = () => {
-      setViewportHeight(window.innerHeight);
       setIsMobile(window.innerWidth < 768); // 768px is typical md breakpoint
     };
 
@@ -187,73 +185,41 @@ export function ScrollServicesSection() {
     return () => window.removeEventListener("resize", updateDimensions);
   }, []);
 
-  // Calculate total scroll height - exactly services.length times the viewport height
-  const totalScrollHeight = services.length * viewportHeight;
-
-  // Track scroll progress
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start start", `${totalScrollHeight}px end`],
-  });
-
-  // Smooth scroll progress
-  const smoothScrollProgress = useSpring(scrollYProgress, {
-    stiffness: 100,
-    damping: 30,
-    restDelta: 0.001,
-  });
-
-  // Wheel rotation based on scroll
-  const wheelRotation = useTransform(smoothScrollProgress, [0, 1], [0, 360]);
-
-  // Background parallax effect
-  const backgroundY = useTransform(smoothScrollProgress, [0, 1], ["0%", "30%"]);
-
-  // Calculate progress and opacity/y values for each service
-  const serviceProgresses = services.map((_, index) => {
-    return useTransform(
-      smoothScrollProgress,
-      [index / services.length, (index + 1) / services.length],
-      [0, 1]
-    );
-  });
-
-  // Define opacity and yPositions for service animations
-  const opacities = serviceProgresses.map((serviceProgress) =>
-    useTransform(serviceProgress, [0, 0.5, 1], [0, 1, 0])
-  );
-
-  const yPositions = serviceProgresses.map((serviceProgress) =>
-    useTransform(serviceProgress, [0, 0.5, 1], [100, 0, -100])
-  );
-
-  // Update active index based on scroll position and control scroll indicator
+  // Auto-rotate the wheel and change active service
   useEffect(() => {
-    const unsubscribe = scrollYProgress.onChange((value) => {
-      // Calculate which service should be active based on scroll progress
-      const newIndex = Math.min(
-        services.length - 1,
-        Math.floor(value * services.length)
-      );
-      setActiveIndex(newIndex);
+    if (!isInView) return;
 
-      // Hide scroll indicator after user has scrolled a bit
-      if (value > 0.05) {
-        setShowScrollIndicator(false);
-      } else {
-        setShowScrollIndicator(true);
-      }
+    const interval = setInterval(() => {
+      setActiveIndex((prev) => (prev + 1) % services.length);
+    }, 5000); // Change service every 5 seconds
+
+    return () => clearInterval(interval);
+  }, [isInView]);
+
+  // Animate wheel rotation when active index changes
+  useEffect(() => {
+    const rotationAngle = (activeIndex * 360) / services.length;
+
+    wheelControls.start({
+      rotate: rotationAngle,
+      transition: {
+        type: "spring",
+        stiffness: 60,
+        damping: 20,
+      },
     });
+  }, [activeIndex, wheelControls]);
 
-    return () => unsubscribe();
-  }, [scrollYProgress]);
+  // Handle manual service selection
+  const selectService = (index: number) => {
+    setActiveIndex(index);
+  };
 
   return (
     <section
       id="services"
-      ref={containerRef}
-      className="relative bg-background"
-      style={{ height: `${totalScrollHeight}px` }}
+      ref={sectionRef}
+      className="relative bg-background py-20 min-h-screen flex items-center"
     >
       {/* Background decorative elements */}
       <div className="absolute inset-0 overflow-hidden">
@@ -264,7 +230,7 @@ export function ScrollServicesSection() {
         <div className="absolute inset-0 bg-gradient-to-b from-background via-background to-background opacity-90" />
 
         {/* Animated background elements */}
-        <motion.div className="absolute inset-0" style={{ y: backgroundY }}>
+        <div className="absolute inset-0">
           {decorativeElements.map((elem, index) => {
             // Determine size class based on screen size
             const sizeClass = {
@@ -418,380 +384,391 @@ export function ScrollServicesSection() {
               </linearGradient>
             </defs>
           </svg>
-        </motion.div>
-      </div>
-
-      {/* Sticky container for content */}
-      <div className="sticky top-0 h-screen flex flex-col justify-center">
-        <div className="container mx-auto relative z-10 px-4 lg:px-16">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="text-center max-w-3xl mx-auto mb-8 md:mb-16"
-          >
-            <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-3 md:mb-4">
-              <span className="gradient-text">What We Do</span>
-            </h2>
-            <p className="text-sm md:text-base lg:text-lg text-foreground/70">
-              At Obliquepath, we specialize in building smart automation systems
-              that make running your business easier, faster, and more
-              efficient. <br />
-              <span className="gradient-text font-bold mt-2">
-                Here&apos;s how we help:
-              </span>
-            </p>
-          </motion.div>
-
-          {/* Mobile layout (stacked) */}
-          {isMobile ? (
-            <div className="flex flex-col h-[70vh] justify-between">
-              {/* Service descriptions - top half */}
-              <div className="relative h-[40vh] flex items-center mb-4">
-                {services.map((service, index) => {
-                  // Calculate opacity and y position for each service
-                  const opacity = opacities[index];
-                  const y = yPositions[index];
-
-                  return (
-                    <motion.div
-                      key={service.id}
-                      className="absolute inset-0 flex flex-col justify-center"
-                      style={{ opacity, y }}
-                    >
-                      <div className="backdrop-blur-sm bg-background/30 p-4 rounded-xl border border-border/10">
-                        <div
-                          className={`w-10 h-10 rounded-lg ${service.color} flex items-center justify-center mb-3`}
-                        >
-                          {React.createElement(service.icon, {
-                            className: "h-5 w-5",
-                          })}
-                        </div>
-                        <h3 className="text-xl font-bold mb-2">
-                          {service.title}
-                        </h3>
-                        <p className="text-sm text-foreground/70">
-                          {service.description}
-                        </p>
-                      </div>
-                    </motion.div>
-                  );
-                })}
-              </div>
-
-              {/* Wheel - bottom half */}
-              <div className="relative h-[30vh] flex items-center justify-center">
-                {/* Rotating wheel - smaller on mobile */}
-                <motion.div
-                  className="relative w-[250px] h-[250px]"
-                  style={{ rotate: wheelRotation }}
-                >
-                  {/* Wheel background circle */}
-                  <svg
-                    className="absolute inset-0 w-full h-full"
-                    viewBox="0 0 250 250"
-                  >
-                    <motion.circle
-                      cx="125"
-                      cy="125"
-                      r="100"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeOpacity="0.1"
-                      strokeWidth="1"
-                      strokeDasharray="5 5"
-                    />
-                  </svg>
-
-                  {/* Icons on the wheel */}
-                  {services.map((service, index) => {
-                    // Calculate position on the wheel
-                    const angle = (index * 360) / services.length;
-                    const radian = (angle * Math.PI) / 180;
-                    const radius = 100; // Half of wheel width for mobile
-
-                    const x = Math.cos(radian) * radius;
-                    const y = Math.sin(radian) * radius;
-
-                    // Determine if this is the active icon
-                    const isActive = index === activeIndex;
-
-                    return (
-                      <motion.div
-                        key={service.id}
-                        className={`absolute rounded-full ${
-                          isActive ? "opacity-0" : service.color
-                        } flex items-center justify-center transform -translate-x-1/2 -translate-y-1/2`}
-                        style={{
-                          left: `calc(50% + ${x}px)`,
-                          top: `calc(50% + ${y}px)`,
-                          width: "40px",
-                          height: "40px",
-                          transition:
-                            "all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)",
-                        }}
-                      >
-                        {!isActive &&
-                          React.createElement(service.icon, {
-                            className: "h-5 w-5",
-                          })}
-                      </motion.div>
-                    );
-                  })}
-
-                  {/* Connecting lines from center to each icon */}
-                  <svg
-                    className="absolute inset-0 w-full h-full"
-                    viewBox="0 0 250 250"
-                  >
-                    {services.map((_, index) => {
-                      const angle = (index * 360) / services.length;
-                      const radian = (angle * Math.PI) / 180;
-                      const radius = 100;
-                      const x = Math.cos(radian) * radius;
-                      const y = Math.sin(radian) * radius;
-
-                      const isActive = index === activeIndex;
-                      const opacity = isActive ? 0.3 : 0.1;
-
-                      return (
-                        <motion.line
-                          key={`line-${index}`}
-                          x1="125"
-                          y1="125"
-                          x2={125 + x}
-                          y2={125 + y}
-                          stroke="currentColor"
-                          strokeOpacity={opacity}
-                          strokeWidth={isActive ? 2 : 1}
-                          strokeDasharray={isActive ? "none" : "5 5"}
-                        />
-                      );
-                    })}
-                  </svg>
-                </motion.div>
-
-                {/* Fixed center icon (outside the rotating wheel) */}
-                {services[activeIndex] && (
-                  <motion.div
-                    key={`center-${activeIndex}`}
-                    className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10"
-                    initial={{ scale: 0.8, opacity: 0 }}
-                    animate={{ scale: 1, opacity: 1 }}
-                    transition={{ duration: 0.5 }}
-                  >
-                    <div className="rounded-full bg-gradient-to-br from-primary/20 to-accent/20 p-[8px] flex items-center justify-center">
-                      <motion.div
-                        className={`w-[90px] h-[90px] rounded-full ${services[activeIndex].color} flex flex-col items-center justify-center`}
-                        animate={{
-                          scale: [1, 1.05, 1],
-                          boxShadow: [
-                            "0 10px 25px -5px rgba(0, 0, 0, 0.1)",
-                            "0 20px 35px -5px rgba(0, 0, 0, 0.2)",
-                            "0 10px 25px -5px rgba(0, 0, 0, 0.1)",
-                          ],
-                        }}
-                        transition={{
-                          repeat: Number.POSITIVE_INFINITY,
-                          duration: 3,
-                          ease: "easeInOut",
-                        }}
-                      >
-                        {React.createElement(services[activeIndex].icon, {
-                          className: `h-8 w-8 ${services[activeIndex].iconColor} mb-1`,
-                        })}
-                        <span className="text-xs font-medium text-center px-1">
-                          {services[activeIndex].title}
-                        </span>
-                      </motion.div>
-                    </div>
-                  </motion.div>
-                )}
-              </div>
-            </div>
-          ) : (
-            // Desktop layout (side by side)
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-              {/* Left column - Service descriptions */}
-              <div className="relative h-[50vh] flex items-center">
-                {services.map((service, index) => {
-                  // Calculate opacity and y position for each service
-                  const opacity = opacities[index];
-                  const y = yPositions[index];
-
-                  return (
-                    <motion.div
-                      key={service.id}
-                      className="absolute inset-0 flex flex-col justify-center"
-                      style={{ opacity, y }}
-                    >
-                      <div className="max-w-lg backdrop-blur-sm bg-background/30 p-6 rounded-xl border border-border/10">
-                        <div
-                          className={`w-12 h-12 rounded-lg ${service.color} flex items-center justify-center mb-4`}
-                        >
-                          {React.createElement(service.icon, {
-                            className: "h-6 w-6",
-                          })}
-                        </div>
-                        <h3 className="text-2xl font-bold mb-4">
-                          {service.title}
-                        </h3>
-                        <p className="text-foreground/70">
-                          {service.description}
-                        </p>
-                      </div>
-                    </motion.div>
-                  );
-                })}
-              </div>
-
-              {/* Right column - Rotating wheel of icons with fixed center icon */}
-              <div className="relative h-[50vh] flex items-center justify-center">
-                {/* Rotating wheel */}
-                <motion.div
-                  className="relative w-[300px] h-[300px] md:w-[400px] md:h-[400px]"
-                  style={{ rotate: wheelRotation }}
-                >
-                  {/* Wheel background circle */}
-                  <svg
-                    className="absolute inset-0 w-full h-full"
-                    viewBox="0 0 400 400"
-                  >
-                    <motion.circle
-                      cx="200"
-                      cy="200"
-                      r="150"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeOpacity="0.1"
-                      strokeWidth="1"
-                      strokeDasharray="5 5"
-                    />
-                  </svg>
-
-                  {/* Icons on the wheel */}
-                  {services.map((service, index) => {
-                    // Calculate position on the wheel
-                    const angle = (index * 360) / services.length;
-                    const radian = (angle * Math.PI) / 180;
-                    const radius = 150; // Half of wheel width
-
-                    const x = Math.cos(radian) * radius;
-                    const y = Math.sin(radian) * radius;
-
-                    // Determine if this is the active icon
-                    const isActive = index === activeIndex;
-
-                    return (
-                      <motion.div
-                        key={service.id}
-                        className={`absolute rounded-full ${
-                          isActive ? "opacity-0" : service.color
-                        } flex items-center justify-center transform -translate-x-1/2 -translate-y-1/2`}
-                        style={{
-                          left: `calc(50% + ${x}px)`,
-                          top: `calc(50% + ${y}px)`,
-                          width: "60px",
-                          height: "60px",
-                          transition:
-                            "all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)",
-                        }}
-                      >
-                        {!isActive &&
-                          React.createElement(service.icon, {
-                            className: "h-6 w-6",
-                          })}
-                      </motion.div>
-                    );
-                  })}
-
-                  {/* Connecting lines from center to each icon */}
-                  <svg
-                    className="absolute inset-0 w-full h-full"
-                    viewBox="0 0 400 400"
-                  >
-                    {services.map((_, index) => {
-                      const angle = (index * 360) / services.length;
-                      const radian = (angle * Math.PI) / 180;
-                      const radius = 150;
-                      const x = Math.cos(radian) * radius;
-                      const y = Math.sin(radian) * radius;
-
-                      const isActive = index === activeIndex;
-                      const opacity = isActive ? 0.3 : 0.1;
-
-                      return (
-                        <motion.line
-                          key={`line-${index}`}
-                          x1="200"
-                          y1="200"
-                          x2={200 + x}
-                          y2={200 + y}
-                          stroke="currentColor"
-                          strokeOpacity={opacity}
-                          strokeWidth={isActive ? 2 : 1}
-                          strokeDasharray={isActive ? "none" : "5 5"}
-                        />
-                      );
-                    })}
-                  </svg>
-                </motion.div>
-
-                {/* Fixed center icon (outside the rotating wheel) */}
-                {services[activeIndex] && (
-                  <motion.div
-                    key={`center-${activeIndex}`}
-                    className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10"
-                    initial={{ scale: 0.8, opacity: 0 }}
-                    animate={{ scale: 1, opacity: 1 }}
-                    transition={{ duration: 0.5 }}
-                  >
-                    <div className="rounded-full bg-gradient-to-br from-primary/20 to-accent/20 p-[10px] flex items-center justify-center">
-                      <motion.div
-                        className={`w-[120px] h-[120px] rounded-full ${services[activeIndex].color} flex flex-col items-center justify-center`}
-                        animate={{
-                          scale: [1, 1.05, 1],
-                          boxShadow: [
-                            "0 10px 25px -5px rgba(0, 0, 0, 0.1)",
-                            "0 20px 35px -5px rgba(0, 0, 0, 0.2)",
-                            "0 10px 25px -5px rgba(0, 0, 0, 0.1)",
-                          ],
-                        }}
-                        transition={{
-                          repeat: Number.POSITIVE_INFINITY,
-                          duration: 3,
-                          ease: "easeInOut",
-                        }}
-                      >
-                        {React.createElement(services[activeIndex].icon, {
-                          className: `h-12 w-12 ${services[activeIndex].iconColor} mb-2`,
-                        })}
-                        <span className="text-xs font-medium text-center">
-                          {services[activeIndex].title}
-                        </span>
-                      </motion.div>
-                    </div>
-                  </motion.div>
-                )}
-              </div>
-            </div>
-          )}
-
-          {/* Service progress indicator */}
-          <motion.div
-            className="absolute bottom-4 md:bottom-8 left-1/2 transform -translate-x-1/2 text-sm text-foreground/60 font-medium"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 1 }}
-          >
-            <span className="text-primary font-bold">{activeIndex + 1}</span>
-            <span> / {services.length}</span>
-          </motion.div>
         </div>
       </div>
 
-      {/* Scroll indicator */}
-      {showScrollIndicator && <ScrollIndicator fadeOutAfter={0.05} />}
+      {/* Content container */}
+      <div className="container mx-auto relative z-10 px-4 lg:px-16">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+          transition={{ duration: 0.5 }}
+          className="text-center max-w-3xl mx-auto mb-8 md:mb-16"
+        >
+          <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-3 md:mb-4">
+            Our <span className="gradient-text">AI-Powered</span> Services
+          </h2>
+          <p className="text-sm md:text-base lg:text-lg text-foreground/70">
+            We offer a comprehensive suite of automation solutions designed to
+            streamline your business operations and boost productivity.
+          </p>
+        </motion.div>
+
+        {/* Mobile layout (stacked) */}
+        {isMobile ? (
+          <div className="flex flex-col h-[70vh] justify-between">
+            {/* Service descriptions - top half */}
+            <div className="relative h-[40vh] flex items-center mb-4">
+              <AnimatePresence mode="wait">
+                {services.map(
+                  (service, index) =>
+                    index === activeIndex && (
+                      <motion.div
+                        key={service.id}
+                        className="absolute inset-0 flex flex-col justify-center"
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -20 }}
+                        transition={{ duration: 0.5 }}
+                      >
+                        <div className="backdrop-blur-sm bg-background/30 p-4 rounded-xl border border-border/10">
+                          <div
+                            className={`w-10 h-10 rounded-lg ${service.color} flex items-center justify-center mb-3`}
+                          >
+                            {React.createElement(service.icon, {
+                              className: "h-5 w-5",
+                            })}
+                          </div>
+                          <h3 className="text-xl font-bold mb-2">
+                            {service.title}
+                          </h3>
+                          <p className="text-sm text-foreground/70">
+                            {service.description}
+                          </p>
+                        </div>
+                      </motion.div>
+                    )
+                )}
+              </AnimatePresence>
+            </div>
+
+            {/* Wheel - bottom half */}
+            <div className="relative h-[30vh] flex items-center justify-center">
+              {/* Rotating wheel - smaller on mobile */}
+              <motion.div
+                className="relative w-[250px] h-[250px]"
+                animate={wheelControls}
+              >
+                {/* Wheel background circle */}
+                <svg
+                  className="absolute inset-0 w-full h-full"
+                  viewBox="0 0 250 250"
+                >
+                  <motion.circle
+                    cx="125"
+                    cy="125"
+                    r="100"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeOpacity="0.1"
+                    strokeWidth="1"
+                    strokeDasharray="5 5"
+                  />
+                </svg>
+
+                {/* Icons on the wheel */}
+                {services.map((service, index) => {
+                  // Calculate position on the wheel
+                  const angle = (index * 360) / services.length;
+                  const radian = (angle * Math.PI) / 180;
+                  const radius = 100; // Half of wheel width for mobile
+
+                  const x = Math.cos(radian) * radius;
+                  const y = Math.sin(radian) * radius;
+
+                  // Determine if this is the active icon
+                  const isActive = index === activeIndex;
+
+                  return (
+                    <motion.div
+                      key={service.id}
+                      className={`absolute rounded-full ${
+                        isActive ? "opacity-0" : service.color
+                      } flex items-center justify-center transform -translate-x-1/2 -translate-y-1/2 cursor-pointer`}
+                      style={{
+                        left: `calc(50% + ${x}px)`,
+                        top: `calc(50% + ${y}px)`,
+                        width: "40px",
+                        height: "40px",
+                        transition:
+                          "all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)",
+                      }}
+                      onClick={() => selectService(index)}
+                    >
+                      {!isActive &&
+                        React.createElement(service.icon, {
+                          className: "h-5 w-5",
+                        })}
+                    </motion.div>
+                  );
+                })}
+
+                {/* Connecting lines from center to each icon */}
+                <svg
+                  className="absolute inset-0 w-full h-full"
+                  viewBox="0 0 250 250"
+                >
+                  {services.map((_, index) => {
+                    const angle = (index * 360) / services.length;
+                    const radian = (angle * Math.PI) / 180;
+                    const radius = 100;
+                    const x = Math.cos(radian) * radius;
+                    const y = Math.sin(radian) * radius;
+
+                    const isActive = index === activeIndex;
+                    const opacity = isActive ? 0.3 : 0.1;
+
+                    return (
+                      <motion.line
+                        key={`line-${index}`}
+                        x1="125"
+                        y1="125"
+                        x2={125 + x}
+                        y2={125 + y}
+                        stroke="currentColor"
+                        strokeOpacity={opacity}
+                        strokeWidth={isActive ? 2 : 1}
+                        strokeDasharray={isActive ? "none" : "5 5"}
+                      />
+                    );
+                  })}
+                </svg>
+              </motion.div>
+
+              {/* Fixed center icon (outside the rotating wheel) */}
+              {services[activeIndex] && (
+                <motion.div
+                  key={`center-${activeIndex}`}
+                  className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10"
+                  initial={{ scale: 0.8, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  transition={{ duration: 0.5 }}
+                >
+                  <div className="rounded-full bg-gradient-to-br from-primary/20 to-accent/20 p-[8px] flex items-center justify-center">
+                    <motion.div
+                      className={`w-[90px] h-[90px] rounded-full ${services[activeIndex].color} flex flex-col items-center justify-center`}
+                      animate={{
+                        scale: [1, 1.05, 1],
+                        boxShadow: [
+                          "0 10px 25px -5px rgba(0, 0, 0, 0.1)",
+                          "0 20px 35px -5px rgba(0, 0, 0, 0.2)",
+                          "0 10px 25px -5px rgba(0, 0, 0, 0.1)",
+                        ],
+                      }}
+                      transition={{
+                        repeat: Number.POSITIVE_INFINITY,
+                        duration: 3,
+                        ease: "easeInOut",
+                      }}
+                    >
+                      {React.createElement(services[activeIndex].icon, {
+                        className: `h-8 w-8 ${services[activeIndex].iconColor} mb-1`,
+                      })}
+                      <span className="text-xs font-medium text-center px-1">
+                        {services[activeIndex].title}
+                      </span>
+                    </motion.div>
+                  </div>
+                </motion.div>
+              )}
+            </div>
+
+            {/* Service navigation dots */}
+            <div className="flex justify-center gap-2 mt-4">
+              {services.map((_, index) => (
+                <button
+                  key={index}
+                  onClick={() => selectService(index)}
+                  className={`w-2 h-2 rounded-full transition-colors ${
+                    index === activeIndex ? "bg-primary" : "bg-primary/30"
+                  }`}
+                  aria-label={`Go to service ${index + 1}`}
+                />
+              ))}
+            </div>
+          </div>
+        ) : (
+          // Desktop layout (side by side)
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            {/* Left column - Service descriptions */}
+            <div className="relative h-[50vh] flex items-center">
+              <AnimatePresence mode="wait">
+                {services.map(
+                  (service, index) =>
+                    index === activeIndex && (
+                      <motion.div
+                        key={service.id}
+                        className="absolute inset-0 flex flex-col justify-center"
+                        initial={{ opacity: 0, x: -50 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        exit={{ opacity: 0, x: 50 }}
+                        transition={{ duration: 0.5 }}
+                      >
+                        <div className="max-w-lg backdrop-blur-sm bg-background/30 p-6 rounded-xl border border-border/10">
+                          <div
+                            className={`w-12 h-12 rounded-lg ${service.color} flex items-center justify-center mb-4`}
+                          >
+                            {React.createElement(service.icon, {
+                              className: "h-6 w-6",
+                            })}
+                          </div>
+                          <h3 className="text-2xl font-bold mb-4">
+                            {service.title}
+                          </h3>
+                          <p className="text-foreground/70">
+                            {service.description}
+                          </p>
+                        </div>
+                      </motion.div>
+                    )
+                )}
+              </AnimatePresence>
+            </div>
+
+            {/* Right column - Rotating wheel of icons with fixed center icon */}
+            <div className="relative h-[50vh] flex items-center justify-center">
+              {/* Rotating wheel */}
+              <motion.div
+                className="relative w-[300px] h-[300px] md:w-[400px] md:h-[400px]"
+                animate={wheelControls}
+              >
+                {/* Wheel background circle */}
+                <svg
+                  className="absolute inset-0 w-full h-full"
+                  viewBox="0 0 400 400"
+                >
+                  <motion.circle
+                    cx="200"
+                    cy="200"
+                    r="150"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeOpacity="0.1"
+                    strokeWidth="1"
+                    strokeDasharray="5 5"
+                  />
+                </svg>
+
+                {/* Icons on the wheel */}
+                {services.map((service, index) => {
+                  // Calculate position on the wheel
+                  const angle = (index * 360) / services.length;
+                  const radian = (angle * Math.PI) / 180;
+                  const radius = 150; // Half of wheel width
+
+                  const x = Math.cos(radian) * radius;
+                  const y = Math.sin(radian) * radius;
+
+                  // Determine if this is the active icon
+                  const isActive = index === activeIndex;
+
+                  return (
+                    <motion.div
+                      key={service.id}
+                      className={`absolute rounded-full ${
+                        isActive ? "opacity-0" : service.color
+                      } flex items-center justify-center transform -translate-x-1/2 -translate-y-1/2 cursor-pointer`}
+                      style={{
+                        left: `calc(50% + ${x}px)`,
+                        top: `calc(50% + ${y}px)`,
+                        width: "60px",
+                        height: "60px",
+                        transition:
+                          "all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)",
+                      }}
+                      onClick={() => selectService(index)}
+                    >
+                      {!isActive &&
+                        React.createElement(service.icon, {
+                          className: "h-6 w-6",
+                        })}
+                    </motion.div>
+                  );
+                })}
+
+                {/* Connecting lines from center to each icon */}
+                <svg
+                  className="absolute inset-0 w-full h-full"
+                  viewBox="0 0 400 400"
+                >
+                  {services.map((_, index) => {
+                    const angle = (index * 360) / services.length;
+                    const radian = (angle * Math.PI) / 180;
+                    const radius = 150;
+                    const x = Math.cos(radian) * radius;
+                    const y = Math.sin(radian) * radius;
+
+                    const isActive = index === activeIndex;
+                    const opacity = isActive ? 0.3 : 0.1;
+
+                    return (
+                      <motion.line
+                        key={`line-${index}`}
+                        x1="200"
+                        y1="200"
+                        x2={200 + x}
+                        y2={200 + y}
+                        stroke="currentColor"
+                        strokeOpacity={opacity}
+                        strokeWidth={isActive ? 2 : 1}
+                        strokeDasharray={isActive ? "none" : "5 5"}
+                      />
+                    );
+                  })}
+                </svg>
+              </motion.div>
+
+              {/* Fixed center icon (outside the rotating wheel) */}
+              {services[activeIndex] && (
+                <motion.div
+                  key={`center-${activeIndex}`}
+                  className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10"
+                  initial={{ scale: 0.8, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  transition={{ duration: 0.5 }}
+                >
+                  <div className="rounded-full bg-gradient-to-br from-primary/20 to-accent/20 p-[10px] flex items-center justify-center">
+                    <motion.div
+                      className={`w-[120px] h-[120px] rounded-full ${services[activeIndex].color} flex flex-col items-center justify-center`}
+                      animate={{
+                        scale: [1, 1.05, 1],
+                        boxShadow: [
+                          "0 10px 25px -5px rgba(0, 0, 0, 0.1)",
+                          "0 20px 35px -5px rgba(0, 0, 0, 0.2)",
+                          "0 10px 25px -5px rgba(0, 0, 0, 0.1)",
+                        ],
+                      }}
+                      transition={{
+                        repeat: Number.POSITIVE_INFINITY,
+                        duration: 3,
+                        ease: "easeInOut",
+                      }}
+                    >
+                      {React.createElement(services[activeIndex].icon, {
+                        className: `h-12 w-12 ${services[activeIndex].iconColor} mb-2`,
+                      })}
+                      <span className="text-xs font-medium text-center">
+                        {services[activeIndex].title}
+                      </span>
+                    </motion.div>
+                  </div>
+                </motion.div>
+              )}
+            </div>
+          </div>
+        )}
+
+        {/* Service progress indicator */}
+        <motion.div
+          className="absolute bottom-4 md:bottom-8 left-1/2 transform -translate-x-1/2 text-sm text-foreground/60 font-medium"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1 }}
+        >
+          <span className="text-primary font-bold">{activeIndex + 1}</span>
+          <span> / {services.length}</span>
+        </motion.div>
+      </div>
     </section>
   );
 }

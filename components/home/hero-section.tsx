@@ -64,7 +64,7 @@ export function HeroSection() {
                 size="lg"
                 className="bg-primary-600 text-white hover:bg-primary-600/90"
               >
-                Get Started
+                Let&apos;s Automate Your Business
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
               <Button size="lg" variant="outline">

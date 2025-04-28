@@ -182,8 +182,10 @@ p,
 span {
   font-family: Poppins, sans-serif;
 }
-a {
+a,
+button {
   font-family: Fira Code, monospace;
+  cursor: pointer;
 }
 /* Gradient Text */
 .gradient-text {

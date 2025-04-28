@@ -26,6 +26,7 @@ export const metadata: Metadata = {
   title: "Oblique Path",
   description:
     "Obliquepath helps small to mid-sized businesses automate workflows with custom AI-powered tools. From chatbots to smart inventory systems, we deliver affordable, impactful automation to boost efficiency and save time.",
+  icons: "/icon.png",
 };
 
 export default function RootLayout({
@@ -36,7 +37,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        // className={`${inter.variable} ${poppins.variable} ${firaCode.variable} font-sans`}
+      // className={`${inter.variable} ${poppins.variable} ${firaCode.variable} font-sans`}
       >
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           {children}

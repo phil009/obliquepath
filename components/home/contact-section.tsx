@@ -20,7 +20,10 @@ export function ContactSection() {
   };
 
   return (
-    <section id="contact" className="py-20 px-4 lg:px-16 bg-background/5">
+    <section
+      id="contact"
+      className="py-20 px-4 lg:px-16 bg-background/5 overflow-hidden"
+    >
       <div className="container">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -154,7 +157,7 @@ export function ContactSection() {
                 </div>
                 <div>
                   <h4 className="font-medium mb-1">Call Us</h4>
-                  <p className="text-foreground/70">(555) 123-4567</p>
+                  <p className="text-foreground/70">(+1)6476790535</p>
                 </div>
               </motion.div>
 
