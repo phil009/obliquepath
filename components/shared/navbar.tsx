@@ -38,7 +38,7 @@ export function Navbar() {
           : "bg-transparent py-5"
       )}
     >
-      <div className="container flex items-center justify-between">
+      <div className="container mx-auto flex items-center justify-between">
         <Link href="/" className="flex items-center gap-2">
           <motion.div
             initial={{ opacity: 0, y: -10 }}
@@ -52,7 +52,7 @@ export function Navbar() {
         </Link>
 
         {/* Desktop Navigation */}
-        <nav className="hidden md:flex items-center gap-6">
+        <nav className="hidden lg:flex items-center gap-6">
           {navItems.map((item, index) => (
             <motion.div
               key={item.name}
@@ -99,7 +99,7 @@ export function Navbar() {
         </nav>
 
         {/* Mobile Menu Button */}
-        <div className="flex items-center md:hidden gap-2">
+        <div className="flex items-center lg:hidden gap-2">
           <Button
             variant="ghost"
             size="icon"

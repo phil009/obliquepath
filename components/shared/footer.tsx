@@ -5,7 +5,7 @@ import { ArrowRight } from "lucide-react";
 export function Footer() {
   return (
     <footer className="bg-background border-t border-border/50 p-4 lg:px-16">
-      <div className="container py-12">
+      <div className="container mx-auto py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div className="md:col-span-1">
             <Link href="/" className="flex items-center gap-2">
@@ -15,7 +15,7 @@ export function Footer() {
               </div>
             </Link>
             <p className="mt-4 text-foreground/70">
-              Modern AI automation solutions for small to mid-sized businesses.
+              Modern AI automation solutions for local businesses.
             </p>
           </div>
 
@@ -100,11 +100,11 @@ export function Footer() {
             <p className="text-foreground/70 mb-4">
               Stay updated with the latest in AI automation.
             </p>
-            <div className="flex gap-2">
+            <div className="flex gap-2 items-center">
               <input
                 type="email"
                 placeholder="Your email"
-                className="px-3 py-2 bg-background border border-border rounded-md flex-1"
+                className="px-3 py-2 max-w-52 bg-background border border-border rounded-md flex-1"
               />
               <Button size="sm" className="bg-primary hover:bg-primary/90">
                 <ArrowRight className="h-4 w-4" />

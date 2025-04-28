@@ -99,12 +99,12 @@ export function HeroSection() {
             transition={{ duration: 0.8, delay: 0.3 }}
             className="relative"
           >
-            <div className="relative w-full aspect-[5/7] md:aspect-square max-w-md mx-auto">
+            <div className="relative w-full aspect-square max-w-md mx-auto">
               <div className="absolute inset-0 bg-gradient-to-br from-primary-600/20 to-accent-500/20 rounded-2xl blur-xl" />
               <div className="absolute inset-4 bg-card rounded-xl shadow-lg border overflow-hidden">
                 <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-accent/5" />
                 <div className="relative p-6 h-full flex flex-col">
-                  <div className="flex items-center justify-between md:mb-6">
+                  <div className="flex items-center justify-between mb-2 md:mb-6">
                     <div className="flex items-center gap-2">
                       <Bot className="h-6 w-6 text-primary" />
                       <h3 className="font-semibold">AI Assistant</h3>
@@ -114,20 +114,20 @@ export function HeroSection() {
 
                   <div className="space-y-2 md:space-y-4 flex-1">
                     <div className="bg-background/50 p-2 md:p-3 rounded-lg max-w-[80%]">
-                      <p className="text-xs md:text-sm">
+                      <p className="text-[9px] sm:text-sm">
                         How can I help optimize your customer service workflow?
                       </p>
                     </div>
 
                     <div className="bg-primary/10 p-2 md:p-3 rounded-lg max-w-[80%] ml-auto">
-                      <p className="text-xs md:text-sm">
+                      <p className="text-[9px] sm:text-sm">
                         We need to reduce response time and handle more
                         inquiries.
                       </p>
                     </div>
 
                     <div className="bg-background/50 p-2 md:p-3 rounded-lg max-w-[80%]">
-                      <p className="text-xs md:text-sm">
+                      <p className="text-[9px] sm:text-sm">
                         I&apos;ll create an automated response system with smart
                         routing based on inquiry type.
                       </p>
@@ -144,7 +144,7 @@ export function HeroSection() {
                   >
                     <div className="flex items-center gap-2">
                       <LineChart className="h-5 w-5 text-accent" />
-                      <p className="text-[11px] md:text-sm font-medium">
+                      <p className="text-[9px] sm:text-sm font-medium">
                         Projected time savings: 15 hours/week
                       </p>
                     </div>

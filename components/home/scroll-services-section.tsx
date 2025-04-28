@@ -265,7 +265,7 @@ export function AutoServicesSection() {
             return (
               <motion.div
                 key={index}
-                className={`absolute ${elem.position} ${sizeClass} opacity-30`}
+                className={`absolute ${elem.position} ${sizeClass} dark:opacity-5 opacity-10`}
                 animate={elem.animation}
                 transition={{
                   repeat: Number.POSITIVE_INFINITY,
@@ -574,7 +574,7 @@ export function AutoServicesSection() {
             </div>
 
             {/* Service navigation dots */}
-            <div className="flex justify-center gap-2 mt-4">
+            <div className="hidden md:flex justify-center gap-2 mt-4">
               {services.map((_, index) => (
                 <button
                   key={index}
