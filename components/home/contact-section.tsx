@@ -144,7 +144,7 @@ export function ContactSection() {
                 </div>
                 <div>
                   <h4 className="font-medium mb-1">Email Us</h4>
-                  <p className="text-foreground/70">info@obliquepath.com</p>
+                  <p className="text-foreground/70">info@obliquepath.dev</p>
                 </div>
               </motion.div>
 
@@ -152,12 +152,12 @@ export function ContactSection() {
                 whileHover={{ x: 5 }}
                 className="flex items-start gap-4"
               >
-                <div className="w-12 h-12 rounded-full bg-accent/10 flex items-center justify-center shrink-0">
-                  <Phone className="h-5 w-5 text-accent" />
+                <div className="w-12 h-12 rounded-full bg-accent-/20 flex items-center justify-center shrink-0">
+                  <Phone className="h-5 w-5 text-accent-300" />
                 </div>
                 <div>
                   <h4 className="font-medium mb-1">Call Us</h4>
-                  <p className="text-foreground/70">(+1)6476790535</p>
+                  <p className="text-foreground/70">(+1)-647-679-0535</p>
                 </div>
               </motion.div>
 
@@ -171,9 +171,9 @@ export function ContactSection() {
                 <div>
                   <h4 className="font-medium mb-1">Visit Us</h4>
                   <p className="text-foreground/70">
-                    123 Innovation Drive
+                    1204-111 river side drive east,
                     <br />
-                    Tech City, TC 12345
+                    Windsor On, N9a2s6
                   </p>
                 </div>
               </motion.div>
