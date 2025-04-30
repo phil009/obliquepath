@@ -207,15 +207,15 @@ export function AutoServicesSection() {
     setActiveIndex(index)
   }
 
-  const nextService = () => {
-    setDirection(1)
-    setActiveIndex((prev) => (prev + 1) % services.length)
-  }
+  // const nextService = () => {
+  //   setDirection(1)
+  //   setActiveIndex((prev) => (prev + 1) % services.length)
+  // }
 
-  const prevService = () => {
-    setDirection(-1)
-    setActiveIndex((prev) => (prev - 1 + services.length) % services.length)
-  }
+  // const prevService = () => {
+  //   setDirection(-1)
+  //   setActiveIndex((prev) => (prev - 1 + services.length) % services.length)
+  // }
 
   // Handle swipe gesture on content
   const handleContentDragEnd = (event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
@@ -272,6 +272,7 @@ export function AutoServicesSection() {
     return () => {
       document.removeEventListener("pointermove", handlePointerMove)
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isWheelDragging, activeIndex, services.length])
 
   const handleWheelDragEnd = () => {
