@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { motion, AnimatePresence, useInView } from "framer-motion";
+import { motion, AnimatePresence, useInView, PanInfo } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import {
@@ -105,6 +105,7 @@ export function TestimonialsSection() {
   const [activeIndex, setActiveIndex] = useState(0);
   const [direction, setDirection] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
+  const [isDragging, setIsDragging] = useState(false);
   const constraintsRef = useRef(null);
   const sectionRef = useRef(null);
   const isInView = useInView(sectionRef, { once: false, amount: 0.2 });
@@ -132,16 +133,32 @@ export function TestimonialsSection() {
     );
   };
 
-  // Auto-advance testimonials
+  // Auto-advance testimonials (only when not dragging)
   useEffect(() => {
-    if (!isInView) return;
+    if (!isInView || isDragging) return;
 
     const interval = setInterval(() => {
       nextTestimonial();
     }, 8000);
 
     return () => clearInterval(interval);
-  }, [isInView, activeIndex]);
+  }, [isInView, activeIndex, isDragging]);
+
+  // Handle swipe gesture
+  const handleDragEnd = (
+    event: MouseEvent | TouchEvent | PointerEvent,
+    info: PanInfo
+  ) => {
+    setIsDragging(false);
+
+    // Determine swipe direction based on velocity or offset
+    const swipeThreshold = 50;
+    if (info.offset.x < -swipeThreshold) {
+      nextTestimonial();
+    } else if (info.offset.x > swipeThreshold) {
+      prevTestimonial();
+    }
+  };
 
   const variants = {
     enter: (direction: number) => ({
@@ -180,7 +197,7 @@ export function TestimonialsSection() {
     <section
       id="testimonials"
       ref={sectionRef}
-      className="py-20 px-4 md:px-16 relative overflow-hidden"
+      className="py-20 relative overflow-hidden"
     >
       {/* Background decorative elements */}
       <div className="absolute inset-0 -z-10">
@@ -244,7 +261,13 @@ export function TestimonialsSection() {
               animate="center"
               exit="exit"
               transition={{ type: "spring", stiffness: 300, damping: 30 }}
-              className="w-full"
+              className="w-full touch-pan-y"
+              drag="x"
+              dragConstraints={{ left: 0, right: 0 }}
+              dragElastic={0.1}
+              onDragStart={() => setIsDragging(true)}
+              onDragEnd={handleDragEnd}
+              whileTap={{ cursor: "grabbing" }}
             >
               <Card className="border border-border/50 shadow-md overflow-hidden bg-card/80 backdrop-blur-sm">
                 <CardContent className="p-0">
@@ -392,6 +415,15 @@ export function TestimonialsSection() {
               </Card>
             </motion.div>
           </AnimatePresence>
+
+          {/* Swipe hint indicator (mobile only) */}
+          {isMobile && (
+            <div className="flex justify-center mt-4 text-xs text-foreground/50 items-center gap-2">
+              <ChevronLeft className="h-3 w-3" />
+              <span>Swipe to navigate</span>
+              <ChevronRight className="h-3 w-3" />
+            </div>
+          )}
 
           {/* Floating elements */}
           <motion.div
