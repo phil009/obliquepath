@@ -1,17 +1,17 @@
-"use client"
+"use client";
 
-import type React from "react"
+import type React from "react";
 
-import { PageLayout } from "@/components/page-layout"
-import { motion } from "framer-motion"
-import { Button } from "@/components/ui/button"
-import { CheckCircle, Send } from "lucide-react"
-import { Input } from "@/components/ui/input"
-import { Textarea } from "@/components/ui/textarea"
-import { useState } from "react"
+import { PageLayout } from "@/components/page-layout";
+import { motion } from "framer-motion";
+import { Button } from "@/components/ui/button";
+import { CheckCircle, Send } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { useState } from "react";
 
 export default function CareersPage() {
-  const [isSubmitted, setIsSubmitted] = useState(false)
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
   const values = [
     "Passion for automation and problem-solving",
@@ -19,18 +19,18 @@ export default function CareersPage() {
     "Collaborative approach to client projects",
     "Continuous learning and improvement",
     "Dedication to making technology accessible",
-  ]
+  ];
 
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
+    e.preventDefault();
     // In a real implementation, you would handle the form submission here
-    setIsSubmitted(true)
-    setTimeout(() => setIsSubmitted(false), 3000)
-  }
+    setIsSubmitted(true);
+    setTimeout(() => setIsSubmitted(false), 3000);
+  };
 
   return (
     <PageLayout title="Careers at Obliquepath">
-      <section className="py-12 md:py-16">
+      <section className="py-12 md:py-16 px-4 md:px-16">
         <div className="container">
           <div className="max-w-3xl mx-auto">
             <motion.p
@@ -39,8 +39,9 @@ export default function CareersPage() {
               transition={{ duration: 0.5, delay: 0.1 }}
               className="text-lg text-foreground/80 mb-8"
             >
-              We&apos;re always on the lookout for talented people who are passionate about automation, problem-solving, and
-              helping businesses grow smarter.
+              We&apos;re always on the lookout for talented people who are
+              passionate about automation, problem-solving, and helping
+              businesses grow smarter.
             </motion.p>
 
             <motion.div
@@ -74,7 +75,8 @@ export default function CareersPage() {
             >
               <h3 className="text-2xl font-bold mb-6">Send Us Your Resume</h3>
               <p className="text-foreground/70 mb-6">
-                No openings right now — but send us your resume and we&apos;ll keep you in mind!
+                No openings right now — but send us your resume and we&apos;ll
+                keep you in mind!
               </p>
 
               {isSubmitted ? (
@@ -88,7 +90,8 @@ export default function CareersPage() {
                   </div>
                   <h4 className="text-xl font-bold mb-2">Resume Received!</h4>
                   <p className="text-foreground/70">
-                    Thank you for your interest. We&apos;ll reach out if there&apos;s a good fit.
+                    Thank you for your interest. We&apos;ll reach out if
+                    there&apos;s a good fit.
                   </p>
                 </motion.div>
               ) : (
@@ -104,7 +107,12 @@ export default function CareersPage() {
                       <label htmlFor="email" className="text-sm font-medium">
                         Email
                       </label>
-                      <Input id="email" type="email" placeholder="your.email@example.com" required />
+                      <Input
+                        id="email"
+                        type="email"
+                        placeholder="your.email@example.com"
+                        required
+                      />
                     </div>
                   </div>
 
@@ -112,7 +120,11 @@ export default function CareersPage() {
                     <label htmlFor="position" className="text-sm font-medium">
                       Position of Interest
                     </label>
-                    <Input id="position" placeholder="What role are you interested in?" required />
+                    <Input
+                      id="position"
+                      placeholder="What role are you interested in?"
+                      required
+                    />
                   </div>
 
                   <div className="space-y-2">
@@ -131,10 +143,17 @@ export default function CareersPage() {
                     <label htmlFor="resume" className="text-sm font-medium">
                       Resume Link
                     </label>
-                    <Input id="resume" placeholder="Link to your resume (Google Drive, Dropbox, etc.)" required />
+                    <Input
+                      id="resume"
+                      placeholder="Link to your resume (Google Drive, Dropbox, etc.)"
+                      required
+                    />
                   </div>
 
-                  <Button type="submit" className="w-full bg-primary hover:bg-primary/90">
+                  <Button
+                    type="submit"
+                    className="w-full bg-primary hover:bg-primary/90"
+                  >
                     Submit Application
                     <Send className="ml-2 h-4 w-4" />
                   </Button>
@@ -145,5 +164,5 @@ export default function CareersPage() {
         </div>
       </section>
     </PageLayout>
-  )
+  );
 }

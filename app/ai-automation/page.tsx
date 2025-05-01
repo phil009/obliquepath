@@ -35,14 +35,14 @@ export default function AIAutomationPage() {
 
   return (
     <PageLayout title="AI Automation">
-      <section className="py-12 md:py-16">
+      <section className="py-12 md:py-16 px-4 md:px-16">
         <div className="container">
           <div className="max-w-3xl mx-auto">
             <motion.p
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.1 }}
-              className="text-lg text-foreground/80 mb-8"
+              className="text-base md:text-lg text-foreground/80 mb-8"
             >
               At Obliquepath, we build intelligent automation systems that
               handle repetitive tasks and streamline your business processes.

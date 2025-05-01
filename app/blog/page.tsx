@@ -1,10 +1,10 @@
-"use client"
+"use client";
 
-import { PageLayout } from "@/components/page-layout"
-import { ComingSoon } from "@/components/coming-soon"
-import { motion } from "framer-motion"
-import { FileText, Lightbulb, TrendingUp } from "lucide-react"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { PageLayout } from "@/components/page-layout";
+import { ComingSoon } from "@/components/coming-soon";
+import { motion } from "framer-motion";
+import { FileText, Lightbulb, TrendingUp } from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export default function BlogPage() {
   const upcomingTopics = [
@@ -23,14 +23,15 @@ export default function BlogPage() {
     {
       icon: FileText,
       title: "Case Study Breakdowns",
-      description: "Behind-the-scenes looks at our most successful client projects",
+      description:
+        "Behind-the-scenes looks at our most successful client projects",
       color: "bg-primary/10 text-primary",
     },
-  ]
+  ];
 
   return (
     <PageLayout title="Blog">
-      <section className="py-12 md:py-16">
+      <section className="py-12 md:py-16 px-4 md:px-16">
         <div className="container">
           <div className="max-w-3xl mx-auto">
             <motion.p
@@ -39,8 +40,9 @@ export default function BlogPage() {
               transition={{ duration: 0.5, delay: 0.1 }}
               className="text-lg text-foreground/80 mb-8 text-center"
             >
-              Our blog will feature practical insights, automation trends, and behind-the-scenes looks at our projects
-              and client success stories.
+              Our blog will feature practical insights, automation trends, and
+              behind-the-scenes looks at our projects and client success
+              stories.
             </motion.p>
 
             <motion.h2
@@ -62,7 +64,9 @@ export default function BlogPage() {
                 >
                   <Card className="h-full border border-border/50 hover:border-primary/50 transition-all duration-300 hover:shadow-md">
                     <CardHeader>
-                      <div className={`w-12 h-12 rounded-lg ${topic.color} flex items-center justify-center mb-4`}>
+                      <div
+                        className={`w-12 h-12 rounded-lg ${topic.color} flex items-center justify-center mb-4`}
+                      >
                         <topic.icon className="h-6 w-6" />
                       </div>
                       <CardTitle>{topic.title}</CardTitle>
@@ -80,5 +84,5 @@ export default function BlogPage() {
 
       <ComingSoon message="Launching soon." />
     </PageLayout>
-  )
+  );
 }

@@ -35,7 +35,7 @@ export default function CustomWebSolutionsPage() {
 
   return (
     <PageLayout title="Custom Web Solutions">
-      <section className="py-12 md:py-16">
+      <section className="py-12 md:py-16 px-4 md:px-16">
         <div className="container">
           <div className="max-w-3xl mx-auto">
             <motion.p
