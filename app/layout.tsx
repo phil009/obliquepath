@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 // import { Inter, Poppins, Fira_Code } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
+import { Footer } from "@/components/shared/footer";
+import { Navbar } from "@/components/shared/navbar";
 
 // const inter = Inter({
 //   subsets: ["latin"],
@@ -37,10 +39,13 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-      // className={`${inter.variable} ${poppins.variable} ${firaCode.variable} font-sans`}
+        className="overflow-x-hidden"
+        // className={`${inter.variable} ${poppins.variable} ${firaCode.variable} font-sans`}
       >
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          <Navbar />
           {children}
+          <Footer />
         </ThemeProvider>
       </body>
     </html>

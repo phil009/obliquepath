@@ -24,7 +24,7 @@ export function Footer() {
             <ul className="space-y-2">
               <li>
                 <Link
-                  href="#"
+                  href="/ai-automation"
                   className="text-foreground/70 hover:text-primary transition-colors"
                 >
                   AI Automation
@@ -32,7 +32,7 @@ export function Footer() {
               </li>
               <li>
                 <Link
-                  href="#"
+                  href="/custom-web-solutions"
                   className="text-foreground/70 hover:text-primary transition-colors"
                 >
                   Custom Web Solutions
@@ -40,7 +40,7 @@ export function Footer() {
               </li>
               <li>
                 <Link
-                  href="#"
+                  href="/process-optimization"
                   className="text-foreground/70 hover:text-primary transition-colors"
                 >
                   Process Optimization
@@ -48,7 +48,7 @@ export function Footer() {
               </li>
               <li>
                 <Link
-                  href="#"
+                  href="/tech-support"
                   className="text-foreground/70 hover:text-primary transition-colors"
                 >
                   Tech Support
@@ -62,7 +62,7 @@ export function Footer() {
             <ul className="space-y-2">
               <li>
                 <Link
-                  href="#"
+                  href="/about"
                   className="text-foreground/70 hover:text-primary transition-colors"
                 >
                   About Us
@@ -70,7 +70,7 @@ export function Footer() {
               </li>
               <li>
                 <Link
-                  href="#"
+                  href="/case-studies"
                   className="text-foreground/70 hover:text-primary transition-colors"
                 >
                   Case Studies
@@ -78,7 +78,7 @@ export function Footer() {
               </li>
               <li>
                 <Link
-                  href="#"
+                  href="/blog"
                   className="text-foreground/70 hover:text-primary transition-colors"
                 >
                   Blog
@@ -86,7 +86,7 @@ export function Footer() {
               </li>
               <li>
                 <Link
-                  href="#"
+                  href="/careers"
                   className="text-foreground/70 hover:text-primary transition-colors"
                 >
                   Careers

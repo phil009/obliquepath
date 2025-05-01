@@ -250,7 +250,7 @@ export function AutoServicesSection() {
     // Re-enable auto-rotation after a delay
     setTimeout(() => {
       setAutoRotate(true);
-    }, 5000);
+    }, 3000);
   };
 
   return (
