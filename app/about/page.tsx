@@ -205,11 +205,11 @@ export default function AboutPage() {
             >
               <h3 className="text-2xl font-bold mb-4">Want to learn more?</h3>
               <p className="text-foreground/70 mb-6">
-                We'd love to discuss how we can help your business.
+                We&apos;d love to discuss how we can help your business.
               </p>
               <Link href="/contact">
                 <Button size="lg" className="bg-primary hover:bg-primary/90">
-                  Let's Talk
+                  Let&apos;s Talk
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
               </Link>

@@ -22,7 +22,7 @@ export function ComingSoon({ message = "More details coming soon." }: ComingSoon
       </div>
       <h3 className="text-xl md:text-2xl font-bold mb-4">{message}</h3>
       <p className="text-foreground/70 mb-8 max-w-md">
-        We're working hard to bring you more information. In the meantime, feel free to contact us with any questions.
+        We&apos;re working hard to bring you more information. In the meantime, feel free to contact us with any questions.
       </p>
       <Link href="/contact">
         <Button className="bg-primary hover:bg-primary/90">
