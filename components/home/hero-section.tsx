@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import { ArrowRight, Bot, Zap, LineChart } from "lucide-react";
 import { TypewriterEffect } from "./typewriter-effect";
+import Link from "next/link";
 
 export function HeroSection() {
   return (
@@ -60,16 +61,20 @@ export function HeroSection() {
               transition={{ duration: 0.5, delay: 0.5 }}
               className="flex flex-col sm:flex-row gap-4 pt-4"
             >
-              <Button
-                size="lg"
-                className="bg-primary-600 text-white hover:bg-primary-600/90"
-              >
-                Let&apos;s Automate Your Business
-                <ArrowRight className="ml-2 h-4 w-4" />
-              </Button>
-              <Button size="lg" variant="outline">
-                See Our Solutions
-              </Button>
+              <Link href="/book-demo">
+                <Button
+                  size="lg"
+                  className="bg-primary-600 text-white hover:bg-primary-600/90"
+                >
+                  Let&apos;s Automate Your Business
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </Button>
+              </Link>
+              <Link href="/case-studies">
+                <Button size="lg" variant="outline">
+                  See Our Solutions
+                </Button>
+              </Link>
             </motion.div>
 
             <motion.div
@@ -78,7 +83,7 @@ export function HeroSection() {
               transition={{ duration: 0.5, delay: 0.6 }}
               className="flex items-center gap-4 pt-6"
             >
-              <div className="flex -space-x-2">
+              <div className="flex -space-x-2 opacity-70">
                 {[...Array(4)].map((_, i) => (
                   <div
                     key={i}

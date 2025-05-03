@@ -1,10 +1,10 @@
-"use client"
+"use client";
 
-import { motion } from "framer-motion"
+import { motion } from "framer-motion";
 
 interface PageHeaderProps {
-  title: string
-  subtitle?: string
+  title: string;
+  subtitle?: string;
 }
 
 export function PageHeader({ title, subtitle }: PageHeaderProps) {
@@ -23,12 +23,16 @@ export function PageHeader({ title, subtitle }: PageHeaderProps) {
           transition={{ duration: 0.8 }}
           className="max-w-3xl mx-auto text-center"
         >
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
+          <h1 className="text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-bold mb-6">
             <span className="gradient-text">{title}</span>
           </h1>
-          {subtitle && <p className="text-lg md:text-xl text-foreground/80 max-w-2xl mx-auto">{subtitle}</p>}
+          {subtitle && (
+            <p className="md:text-lg lg:text-xl text-foreground/80 max-w-2xl mx-auto">
+              {subtitle}
+            </p>
+          )}
         </motion.div>
       </div>
     </section>
-  )
+  );
 }

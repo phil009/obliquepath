@@ -197,7 +197,7 @@ export function TestimonialsSection() {
     <section
       id="testimonials"
       ref={sectionRef}
-      className="py-20 relative overflow-hidden"
+      className="py-20 px-4 md:px-16 relative overflow-hidden"
     >
       {/* Background decorative elements */}
       <div className="absolute inset-0 -z-10">

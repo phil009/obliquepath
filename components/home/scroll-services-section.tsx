@@ -444,10 +444,10 @@ export function AutoServicesSection() {
 
         {/* Mobile layout (stacked) */}
         {isMobile ? (
-          <div className="flex flex-col h-[70vh] justify-between">
+          <div className="flex flex-col min-h-[70vh] justify-between">
             {/* Service descriptions - top half */}
             <motion.div
-              className="relative h-[40vh] flex items-center mb-4 touch-pan-x"
+              className="relative min-h-[40vh] flex items-center mb-4 touch-pan-x"
               drag="x"
               dragConstraints={{ left: 0, right: 0 }}
               dragElastic={0.1}
@@ -501,7 +501,7 @@ export function AutoServicesSection() {
             </motion.div>
 
             {/* Wheel - bottom half */}
-            <div className="relative h-[30vh] flex items-center justify-center">
+            <div className="relative min-h-[30vh] flex items-center justify-center">
               {/* Rotating wheel - smaller on mobile */}
               <motion.div
                 className="relative w-[250px] h-[250px]"

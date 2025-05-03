@@ -73,12 +73,14 @@ export function Navbar() {
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.5, delay: 0.5 }}
           >
-            <Button
-              variant="default"
-              className="bg-primary hover:bg-primary/90"
-            >
-              Book a free demo
-            </Button>
+            <Link href={"/book-demo"}>
+              <Button
+                variant="default"
+                className="bg-primary hover:bg-primary/90"
+              >
+                Book a free demo
+              </Button>
+            </Link>
           </motion.div>
           <motion.div
             initial={{ opacity: 0, scale: 0.8 }}
@@ -144,12 +146,15 @@ export function Navbar() {
                     {item.name}
                   </Link>
                 ))}
-                <Button
-                  variant="default"
-                  className="mt-2 bg-primary hover:bg-primary/90"
-                >
-                  `Book a free demo`
-                </Button>
+                <Link href={"/book-demo"}>
+                  <Button
+                    variant="default"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="mt-2 bg-primary hover:bg-primary/90"
+                  >
+                    Book a free demo
+                  </Button>
+                </Link>
               </div>
             </motion.div>
           )}
