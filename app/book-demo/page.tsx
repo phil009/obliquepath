@@ -209,9 +209,9 @@ export default function BookDemoPage() {
               <div>
                 <h3 className="text-2xl font-bold mb-4">What to Expect</h3>
                 <p className="text-foreground/80 mb-6">
-                  Our free demo is a personalized session where we'll show you
+                  Our free demo is a personalized session where we&apos;ll show you
                   how our AI automation solutions can address your specific
-                  business challenges. You'll get a chance to see our tools in
+                  business challenges. You&apos;ll get a chance to see our tools in
                   action and ask any questions you might have.
                 </p>
 
@@ -245,7 +245,7 @@ export default function BookDemoPage() {
                 </h4>
                 <p className="text-foreground/70 text-sm">
                   Our demo is completely free with no obligation to purchase.
-                  We're confident in the value our solutions provide and want to
+                  We&apos;re confident in the value our solutions provide and want to
                   show you how they can benefit your business.
                 </p>
               </div>
@@ -265,7 +265,7 @@ export default function BookDemoPage() {
                       Do I need to prepare anything?
                     </p>
                     <p className="text-foreground/70">
-                      Just come with your questions and challenges. We'll handle
+                      Just come with your questions and challenges. We&apos;ll handle
                       the rest.
                     </p>
                   </div>
