@@ -55,7 +55,7 @@ export default function ServicesPage() {
       description:
         "Websites and web applications with automation built-in to save your team hours every week.",
       icon: Code,
-      color: "bg-accent/10 text-accent",
+      color: "bg-accent-200/10 text-accent-500",
       services: [
         {
           title: "Custom Web Development",
@@ -104,7 +104,7 @@ export default function ServicesPage() {
       description:
         "Ongoing support and maintenance for all our automation systems to ensure reliability.",
       icon: Cog,
-      color: "bg-accent/10 text-accent",
+      color: "bg-accent-200/10 text-accent-500",
       services: [
         {
           title: "Maintenance & Updates",
@@ -136,7 +136,7 @@ export default function ServicesPage() {
       title: "Inventory Management",
       description:
         "Smart inventory systems that predict needs and automate ordering",
-      color: "bg-accent/10 text-accent",
+      color: "bg-accent-200/10 text-accent-500",
     },
     {
       icon: FileText,
@@ -148,7 +148,7 @@ export default function ServicesPage() {
       icon: Headphones,
       title: "Customer Service Automation",
       description: "Smart systems that route and respond to customer inquiries",
-      color: "bg-accent/10 text-accent",
+      color: "bg-accent-200/10 text-accent-500",
     },
   ];
 
@@ -158,7 +158,7 @@ export default function ServicesPage() {
       subtitle="Comprehensive AI automation solutions to streamline your business operations"
     >
       <section className="py-12 md:py-16 px-4 md:px-16">
-        <div className="container">
+        <div className="container mx-auto max-w-7xl">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -280,7 +280,7 @@ export default function ServicesPage() {
       </section>
 
       <section className="py-12 md:py-16  px-4 md:px-16 bg-background/50">
-        <div className="container">
+        <div className="container mx-auto max-w-7xl">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -326,7 +326,7 @@ export default function ServicesPage() {
       </section>
 
       <section className="py-16 md:py-20 px-4 md:px-16">
-        <div className="container">
+        <div className="container mx-auto max-w-7xl">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}

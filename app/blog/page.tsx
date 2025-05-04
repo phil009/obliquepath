@@ -18,7 +18,7 @@ export default function BlogPage() {
       icon: TrendingUp,
       title: "2025 Automation Trends",
       description: "What's new and what's next in business process automation",
-      color: "bg-accent/10 text-accent",
+      color: "bg-accent-200/10 text-accent-400",
     },
     {
       icon: FileText,
@@ -33,7 +33,7 @@ export default function BlogPage() {
     <PageLayout title="Blog">
       <section className="py-12 md:py-16 px-4 md:px-16">
         <div className="container">
-          <div className="max-w-3xl mx-auto">
+          <div className="max-w-4xl mx-auto">
             <motion.p
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}

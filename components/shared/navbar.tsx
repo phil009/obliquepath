@@ -38,7 +38,7 @@ export function Navbar() {
           : "bg-transparent py-5"
       )}
     >
-      <div className="container mx-auto flex items-center justify-between">
+      <div className=" mx-auto flex items-center justify-between">
         <Link href="/" className="flex items-center gap-2">
           <motion.div
             initial={{ opacity: 0, y: -10 }}
@@ -133,7 +133,7 @@ export function Navbar() {
               animate={{ opacity: 1, height: "auto" }}
               exit={{ opacity: 0, height: 0 }}
               transition={{ duration: 0.3 }}
-              className="absolute top-full left-0 right-0 bg-background/95 backdrop-blur-md shadow-md flex flex-col md:hidden"
+              className="absolute top-full left-0 right-0 bg-background/95 backdrop-blur-md shadow-md flex flex-col lg:hidden"
             >
               <div className="flex flex-col p-4 space-y-4">
                 {navItems.map((item) => (

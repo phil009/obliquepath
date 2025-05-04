@@ -20,7 +20,7 @@ export default function CaseStudiesPage() {
       title: "Restaurant Inventory Management",
       description:
         "Smart inventory system that reduced food waste by 40% for a restaurant chain",
-      color: "bg-accent/10 text-accent",
+      color: "bg-accent-300/10 text-accent-500",
     },
     {
       icon: Stethoscope,

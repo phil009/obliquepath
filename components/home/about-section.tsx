@@ -62,7 +62,7 @@ export function AboutSection() {
                   viewport={{ once: true }}
                   className="flex items-start gap-2 sm:gap-3"
                 >
-                  <CheckCircle className="h-5 w-5 sm:h-6 sm:w-6 text-accent shrink-0 mt-0.5" />
+                  <CheckCircle className="h-5 w-5 sm:h-6 sm:w-6 text-accent-300 shrink-0 mt-0.5" />
                   <p className="text-sm sm:text-base text-foreground/80">
                     {feature}
                   </p>
@@ -123,7 +123,7 @@ export function AboutSection() {
                       }}
                       className="bg-accent/10 rounded-lg p-2 sm:p-4 flex flex-col items-center justify-center text-center"
                     >
-                      <div className="text-2xl sm:text-3xl md:text-4xl font-bold text-accent mb-1 sm:mb-2">
+                      <div className="text-2xl sm:text-3xl md:text-4xl font-bold text-accent-300 mb-1 sm:mb-2">
                         3x
                       </div>
                       <div className="text-xs sm:text-sm text-foreground/70">
@@ -140,7 +140,7 @@ export function AboutSection() {
                       }}
                       className="bg-accent/10 rounded-lg p-2 sm:p-4 flex flex-col items-center justify-center text-center"
                     >
-                      <div className="text-2xl sm:text-3xl md:text-4xl font-bold text-accent mb-1 sm:mb-2">
+                      <div className="text-2xl sm:text-3xl md:text-4xl font-bold text-accent-300 mb-1 sm:mb-2">
                         40%
                       </div>
                       <div className="text-xs sm:text-sm text-foreground/70">

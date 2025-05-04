@@ -32,7 +32,7 @@ export default function CareersPage() {
     <PageLayout title="Careers at Obliquepath">
       <section className="py-12 md:py-16 px-4 md:px-16">
         <div className="container">
-          <div className="max-w-3xl mx-auto">
+          <div className="max-w-4xl mx-auto">
             <motion.p
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -60,7 +60,7 @@ export default function CareersPage() {
                     transition={{ duration: 0.5, delay: 0.1 * (index + 1) }}
                     className="flex items-start gap-3"
                   >
-                    <CheckCircle className="h-6 w-6 text-accent shrink-0 mt-0.5" />
+                    <CheckCircle className="h-6 w-6 text-accent-300 shrink-0 mt-0.5" />
                     <p className="text-foreground/80">{value}</p>
                   </motion.div>
                 ))}
@@ -86,7 +86,7 @@ export default function CareersPage() {
                   className="flex flex-col items-center justify-center h-[320px] text-center"
                 >
                   <div className="w-16 h-16 bg-accent/10 rounded-full flex items-center justify-center mb-4">
-                    <CheckCircle className="h-8 w-8 text-accent" />
+                    <CheckCircle className="h-8 w-8 text-accent-300" />
                   </div>
                   <h4 className="text-xl font-bold mb-2">Resume Received!</h4>
                   <p className="text-foreground/70">

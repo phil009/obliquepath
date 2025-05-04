@@ -20,7 +20,7 @@ export default function TechSupportPage() {
       title: "Proactive Monitoring",
       description:
         "We identify and resolve potential issues before they impact your business",
-      color: "bg-accent/10 text-accent",
+      color: "bg-accent-200/10 text-accent-400",
     },
     {
       icon: RefreshCw,
@@ -34,7 +34,7 @@ export default function TechSupportPage() {
       title: "Performance Optimization",
       description:
         "Fine-tuning your automation tools for maximum efficiency and speed",
-      color: "bg-accent/10 text-accent",
+      color: "bg-accent-200/10 text-accent-400",
     },
   ];
 
@@ -42,7 +42,7 @@ export default function TechSupportPage() {
     <PageLayout title="Tech Support">
       <section className="py-12 md:py-16 px-4 md:px-16">
         <div className="container">
-          <div className="max-w-3xl mx-auto">
+          <div className="max-w-4xl mx-auto">
             <motion.p
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}

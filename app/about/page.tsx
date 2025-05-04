@@ -97,7 +97,7 @@ export default function AboutPage() {
                         transition={{ duration: 0.5, delay: 0.1 * (index + 1) }}
                         className="flex items-start gap-2"
                       >
-                        <CheckCircle className="h-5 w-5 text-accent shrink-0 mt-0.5" />
+                        <CheckCircle className="h-5 w-5 text-accent-300 shrink-0 mt-0.5" />
                         <p className="text-sm text-foreground/80">{feature}</p>
                       </motion.div>
                     ))}
@@ -116,7 +116,7 @@ export default function AboutPage() {
                       </div>
                     </div>
                     <div className="bg-accent/10 rounded-lg p-4 flex flex-col items-center justify-center text-center">
-                      <div className="text-2xl font-bold text-accent mb-1">
+                      <div className="text-2xl font-bold text-accent-300 mb-1">
                         3x
                       </div>
                       <div className="text-xs text-foreground/70">
@@ -124,7 +124,7 @@ export default function AboutPage() {
                       </div>
                     </div>
                     <div className="bg-accent/10 rounded-lg p-4 flex flex-col items-center justify-center text-center">
-                      <div className="text-2xl font-bold text-accent mb-1">
+                      <div className="text-2xl font-bold text-accent-300 mb-1">
                         40%
                       </div>
                       <div className="text-xs text-foreground/70">
@@ -190,7 +190,7 @@ export default function AboutPage() {
                     transition={{ duration: 0.5, delay: 0.1 * (index + 1) }}
                     className="flex items-start gap-3"
                   >
-                    <CheckCircle className="h-6 w-6 text-accent shrink-0 mt-0.5" />
+                    <CheckCircle className="h-6 w-6 text-accent-300 shrink-0 mt-0.5" />
                     <p className="text-foreground/80">{benefit}</p>
                   </motion.div>
                 ))}

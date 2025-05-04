@@ -64,7 +64,7 @@ export default function BookDemoPage() {
               transition={{ duration: 0.5 }}
               className="bg-card border border-border/50 rounded-xl p-8 shadow-md"
             >
-              <h3 className="text-2xl font-bold mb-6">
+              <h3 className="text-lg sm:text-2xl font-bold mb-6">
                 Request Your Free Demo
               </h3>
 
@@ -75,7 +75,7 @@ export default function BookDemoPage() {
                   className="flex flex-col items-center justify-center h-[400px] text-center"
                 >
                   <div className="w-16 h-16 bg-accent/10 rounded-full flex items-center justify-center mb-4">
-                    <CheckCircle2 className="h-8 w-8 text-accent" />
+                    <CheckCircle2 className="h-8 w-8 text-accent-300" />
                   </div>
                   <h4 className="text-xl font-bold mb-2">
                     Demo Request Received!
@@ -209,10 +209,10 @@ export default function BookDemoPage() {
               <div>
                 <h3 className="text-2xl font-bold mb-4">What to Expect</h3>
                 <p className="text-foreground/80 mb-6">
-                  Our free demo is a personalized session where we&apos;ll show you
-                  how our AI automation solutions can address your specific
-                  business challenges. You&apos;ll get a chance to see our tools in
-                  action and ask any questions you might have.
+                  Our free demo is a personalized session where we&apos;ll show
+                  you how our AI automation solutions can address your specific
+                  business challenges. You&apos;ll get a chance to see our tools
+                  in action and ask any questions you might have.
                 </p>
 
                 <div className="space-y-6 mt-8">
@@ -240,13 +240,13 @@ export default function BookDemoPage() {
 
               <div className="bg-accent/5 border border-accent/20 rounded-lg p-6">
                 <h4 className="font-bold mb-2 flex items-center">
-                  <CheckCircle2 className="h-5 w-5 text-accent mr-2" />
+                  <CheckCircle2 className="h-5 w-5 text-accent-300 mr-2" />
                   No Obligation
                 </h4>
                 <p className="text-foreground/70 text-sm">
                   Our demo is completely free with no obligation to purchase.
-                  We&apos;re confident in the value our solutions provide and want to
-                  show you how they can benefit your business.
+                  We&apos;re confident in the value our solutions provide and
+                  want to show you how they can benefit your business.
                 </p>
               </div>
 
@@ -265,8 +265,8 @@ export default function BookDemoPage() {
                       Do I need to prepare anything?
                     </p>
                     <p className="text-foreground/70">
-                      Just come with your questions and challenges. We&apos;ll handle
-                      the rest.
+                      Just come with your questions and challenges. We&apos;ll
+                      handle the rest.
                     </p>
                   </div>
                   <div>
