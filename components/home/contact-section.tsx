@@ -258,11 +258,16 @@ export function ContactSection() {
                 </div>
                 <div>
                   <h4 className="font-medium mb-1">Visit Us</h4>
-                  <p className="text-foreground/70">
-                    1204-111 river side drive east,
+                  <a
+                    href="https://maps.app.goo.gl/2XUkCGTVxzbHbyMX7"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-foreground/70"
+                  >
+                    1204-111 Riverside Drive East,
                     <br />
                     Windsor On, N9a2s6
-                  </p>
+                  </a>
                 </div>
               </motion.div>
             </div>
