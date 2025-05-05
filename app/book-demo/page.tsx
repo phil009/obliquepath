@@ -1,7 +1,5 @@
 "use client";
 
-import type React from "react";
-
 import { useState } from "react";
 import { PageLayout } from "@/components/page-layout";
 import { motion } from "framer-motion";
@@ -16,19 +14,79 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { CheckCircle2, Calendar, Clock, Users, ArrowRight } from "lucide-react";
-import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import * as z from "zod";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { bookDemo } from "@/api/api";
+import { toast } from "sonner";
+
+// Define the form schema with Zod
+const formSchema = z.object({
+  firstName: z.string().min(2, {
+    message: "First name must be at least 2 characters.",
+  }),
+  lastName: z.string().min(2, {
+    message: "Last name must be at least 2 characters.",
+  }),
+  email: z.string().email({
+    message: "Please enter a valid email address.",
+  }),
+  company: z.string().min(1, {
+    message: "Company name is required.",
+  }),
+  service: z.string({
+    required_error: "Please select a service.",
+  }),
+  companySize: z.enum(["small", "medium", "large"], {
+    required_error: "Please select your company size.",
+  }),
+  message: z.string().optional(),
+});
+
+// Define the form values type
+type FormValues = z.infer<typeof formSchema>;
 
 export default function BookDemoPage() {
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const [selectedService, setSelectedService] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    // In a real implementation, you would handle the form submission here
+  // Initialize the form with react-hook-form and zod resolver
+  const form = useForm<FormValues>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      firstName: "",
+      lastName: "",
+      email: "",
+      company: "",
+      service: "",
+      companySize: "small",
+      message: "",
+    },
+  });
+
+  // Handle form submission
+  async function onSubmit(data: FormValues) {
+    setIsSubmitted(false);
+    setIsLoading(true);
+    const res = await bookDemo(data);
+    if (res === null) {
+      toast.error("Failed to send demo request. Please try again later.");
+      setIsLoading(false);
+      return;
+    }
+    toast.success("Demo request sent successfully!");
     setIsSubmitted(true);
-    setTimeout(() => setIsSubmitted(false), 5000);
-  };
+    form.reset();
+  }
 
   const demoFeatures = [
     {
@@ -84,118 +142,187 @@ export default function BookDemoPage() {
                     Thank you for your interest. One of our team members will
                     contact you shortly to schedule your personalized demo.
                   </p>
-                  <p className="text-sm text-foreground/60">
-                    Please check your email for a confirmation of your request.
-                  </p>
                 </motion.div>
               ) : (
-                <form onSubmit={handleSubmit} className="space-y-6">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div className="space-y-2">
-                      <Label htmlFor="firstName">First Name</Label>
-                      <Input
-                        id="firstName"
-                        placeholder="Your first name"
-                        required
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="lastName">Last Name</Label>
-                      <Input
-                        id="lastName"
-                        placeholder="Your last name"
-                        required
-                      />
-                    </div>
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="email">Email</Label>
-                    <Input
-                      id="email"
-                      type="email"
-                      placeholder="your.email@example.com"
-                      required
-                    />
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="company">Company</Label>
-                    <Input
-                      id="company"
-                      placeholder="Your company name"
-                      required
-                    />
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="service">Service of Interest</Label>
-                    <Select
-                      value={selectedService}
-                      onValueChange={setSelectedService}
-                      required
-                    >
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select a service" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="ai-automation">
-                          AI Automation
-                        </SelectItem>
-                        <SelectItem value="custom-web-solutions">
-                          Custom Web Solutions
-                        </SelectItem>
-                        <SelectItem value="process-optimization">
-                          Process Optimization
-                        </SelectItem>
-                        <SelectItem value="tech-support">
-                          Tech Support
-                        </SelectItem>
-                        <SelectItem value="multiple">
-                          Multiple Services
-                        </SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label>Company Size</Label>
-                    <RadioGroup
-                      defaultValue="small"
-                      className="flex flex-wrap gap-4"
-                    >
-                      <div className="flex items-center space-x-2">
-                        <RadioGroupItem value="small" id="small" />
-                        <Label htmlFor="small">1-10 employees</Label>
-                      </div>
-                      <div className="flex items-center space-x-2">
-                        <RadioGroupItem value="medium" id="medium" />
-                        <Label htmlFor="medium">11-50 employees</Label>
-                      </div>
-                      <div className="flex items-center space-x-2">
-                        <RadioGroupItem value="large" id="large" />
-                        <Label htmlFor="large">51+ employees</Label>
-                      </div>
-                    </RadioGroup>
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="message">Tell us about your needs</Label>
-                    <Textarea
-                      id="message"
-                      placeholder="What challenges are you looking to solve with automation?"
-                      rows={4}
-                    />
-                  </div>
-
-                  <Button
-                    type="submit"
-                    className="w-full bg-primary hover:bg-primary/90"
+                <Form {...form}>
+                  <form
+                    onSubmit={form.handleSubmit(onSubmit)}
+                    className="space-y-6"
                   >
-                    Request Demo
-                    <ArrowRight className="ml-2 h-4 w-4" />
-                  </Button>
-                </form>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <FormField
+                        control={form.control}
+                        name="firstName"
+                        render={({ field }) => (
+                          <FormItem className="space-y-2">
+                            <FormLabel>First Name</FormLabel>
+                            <FormControl>
+                              <Input placeholder="Your first name" {...field} />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+
+                      <FormField
+                        control={form.control}
+                        name="lastName"
+                        render={({ field }) => (
+                          <FormItem className="space-y-2">
+                            <FormLabel>Last Name</FormLabel>
+                            <FormControl>
+                              <Input placeholder="Your last name" {...field} />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+
+                    <FormField
+                      control={form.control}
+                      name="email"
+                      render={({ field }) => (
+                        <FormItem className="space-y-2">
+                          <FormLabel>Email</FormLabel>
+                          <FormControl>
+                            <Input
+                              type="email"
+                              placeholder="your.email@example.com"
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+
+                    <FormField
+                      control={form.control}
+                      name="company"
+                      render={({ field }) => (
+                        <FormItem className="space-y-2">
+                          <FormLabel>Company</FormLabel>
+                          <FormControl>
+                            <Input placeholder="Your company name" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+
+                    <FormField
+                      control={form.control}
+                      name="service"
+                      render={({ field }) => (
+                        <FormItem className="space-y-2">
+                          <FormLabel>Service of Interest</FormLabel>
+                          <Select
+                            onValueChange={field.onChange}
+                            defaultValue={field.value}
+                          >
+                            <FormControl>
+                              <SelectTrigger>
+                                <SelectValue placeholder="Select a service" />
+                              </SelectTrigger>
+                            </FormControl>
+                            <SelectContent>
+                              <SelectItem value="ai-automation">
+                                AI Automation
+                              </SelectItem>
+                              <SelectItem value="custom-web-solutions">
+                                Custom Web Solutions
+                              </SelectItem>
+                              <SelectItem value="process-optimization">
+                                Process Optimization
+                              </SelectItem>
+                              <SelectItem value="tech-support">
+                                Tech Support
+                              </SelectItem>
+                              <SelectItem value="multiple">
+                                Multiple Services
+                              </SelectItem>
+                            </SelectContent>
+                          </Select>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+
+                    <FormField
+                      control={form.control}
+                      name="companySize"
+                      render={({ field }) => (
+                        <FormItem className="space-y-2">
+                          <FormLabel>Company Size</FormLabel>
+                          <FormControl>
+                            <RadioGroup
+                              onValueChange={field.onChange}
+                              defaultValue={field.value}
+                              className="flex flex-wrap gap-4"
+                            >
+                              <div className="flex items-center space-x-2">
+                                <RadioGroupItem value="small" id="small" />
+                                <FormLabel
+                                  htmlFor="small"
+                                  className="font-normal"
+                                >
+                                  1-10 employees
+                                </FormLabel>
+                              </div>
+                              <div className="flex items-center space-x-2">
+                                <RadioGroupItem value="medium" id="medium" />
+                                <FormLabel
+                                  htmlFor="medium"
+                                  className="font-normal"
+                                >
+                                  11-50 employees
+                                </FormLabel>
+                              </div>
+                              <div className="flex items-center space-x-2">
+                                <RadioGroupItem value="large" id="large" />
+                                <FormLabel
+                                  htmlFor="large"
+                                  className="font-normal"
+                                >
+                                  51+ employees
+                                </FormLabel>
+                              </div>
+                            </RadioGroup>
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+
+                    <FormField
+                      control={form.control}
+                      name="message"
+                      render={({ field }) => (
+                        <FormItem className="space-y-2">
+                          <FormLabel>Tell us about your needs</FormLabel>
+                          <FormControl>
+                            <Textarea
+                              placeholder="What challenges are you looking to solve with automation?"
+                              rows={4}
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+
+                    <Button
+                      type="submit"
+                      className="w-full bg-primary hover:bg-primary/90 disabled:bg-primary/50"
+                      disabled={isLoading}
+                    >
+                      Request Demo
+                      <ArrowRight className="ml-2 h-4 w-4" />
+                    </Button>
+                  </form>
+                </Form>
               )}
             </motion.div>
 
@@ -240,7 +367,7 @@ export default function BookDemoPage() {
 
               <div className="bg-accent/5 border border-accent/20 rounded-lg p-6">
                 <h4 className="font-bold mb-2 flex items-center">
-                  <CheckCircle2 className="h-5 w-5 text-accent-300 mr-2" />
+                  <CheckCircle2 className="h-5 w-5 text-accent mr-2" />
                   No Obligation
                 </h4>
                 <p className="text-foreground/70 text-sm">

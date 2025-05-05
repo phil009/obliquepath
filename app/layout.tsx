@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Footer } from "@/components/shared/footer";
+import { Toaster } from "@/components/ui/sonner";
 import { Navbar } from "@/components/shared/navbar";
 
 // const inter = Inter({
@@ -46,6 +47,7 @@ export default function RootLayout({
           <Navbar />
           {children}
           <Footer />
+          <Toaster />
         </ThemeProvider>
       </body>
     </html>
