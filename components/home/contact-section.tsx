@@ -1,23 +1,71 @@
 "use client";
 
-import type React from "react";
-
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Mail, Phone, MapPin, Send, CheckCircle2 } from "lucide-react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import * as z from "zod";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { contactUs } from "@/api/api";
+import { toast } from "sonner";
+
+// Define the form schema with Zod
+const formSchema = z.object({
+  name: z.string().min(2, {
+    message: "Name must be at least 2 characters.",
+  }),
+  email: z.string().email({
+    message: "Please enter a valid email address.",
+  }),
+  company: z.string().optional(),
+  message: z.string().min(10, {
+    message: "Message must be at least 10 characters.",
+  }),
+});
+
+// Define the form values type
+type FormValues = z.infer<typeof formSchema>;
 
 export function ContactSection() {
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    // In a real implementation, you would handle the form submission here
+  // Initialize the form with react-hook-form and zod resolver
+  const form = useForm<FormValues>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      name: "",
+      email: "",
+      company: "",
+      message: "",
+    },
+  });
+
+  // Handle form submission
+  async function onSubmit(data: FormValues) {
+    setIsSubmitted(false);
+    setIsLoading(true);
+    const res = await contactUs(data);
+    if (res === null) {
+      toast.error("Failed to message. Please try again later.");
+      setIsLoading(false);
+      return;
+    }
+    toast.success("Message sent successfully!");
     setIsSubmitted(true);
-    setTimeout(() => setIsSubmitted(false), 3000);
-  };
+    form.reset();
+  }
 
   return (
     <section
@@ -59,7 +107,7 @@ export function ContactSection() {
                 className="flex flex-col items-center justify-center h-[320px] text-center"
               >
                 <div className="w-16 h-16 bg-accent/10 rounded-full flex items-center justify-center mb-4">
-                  <CheckCircle2 className="h-8 w-8 text-accent" />
+                  <CheckCircle2 className="h-8 w-8 text-accent-300" />
                 </div>
                 <h4 className="text-xl font-bold mb-2">Message Sent!</h4>
                 <p className="text-foreground/70">
@@ -68,54 +116,87 @@ export function ContactSection() {
                 </p>
               </motion.div>
             ) : (
-              <form onSubmit={handleSubmit} className="space-y-4">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <label htmlFor="name" className="text-sm font-medium">
-                      Name
-                    </label>
-                    <Input id="name" placeholder="Your name" required />
-                  </div>
-                  <div className="space-y-2">
-                    <label htmlFor="email" className="text-sm font-medium">
-                      Email
-                    </label>
-                    <Input
-                      id="email"
-                      type="email"
-                      placeholder="your.email@example.com"
-                      required
+              <Form {...form}>
+                <form
+                  onSubmit={form.handleSubmit(onSubmit)}
+                  className="space-y-4"
+                >
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <FormField
+                      control={form.control}
+                      name="name"
+                      render={({ field }) => (
+                        <FormItem className="space-y-2">
+                          <FormLabel>Name</FormLabel>
+                          <FormControl>
+                            <Input placeholder="Your name" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+
+                    <FormField
+                      control={form.control}
+                      name="email"
+                      render={({ field }) => (
+                        <FormItem className="space-y-2">
+                          <FormLabel>Email</FormLabel>
+                          <FormControl>
+                            <Input
+                              type="email"
+                              placeholder="your.email@example.com"
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
                     />
                   </div>
-                </div>
 
-                <div className="space-y-2">
-                  <label htmlFor="company" className="text-sm font-medium">
-                    Company
-                  </label>
-                  <Input id="company" placeholder="Your company name" />
-                </div>
-
-                <div className="space-y-2">
-                  <label htmlFor="message" className="text-sm font-medium">
-                    Message
-                  </label>
-                  <Textarea
-                    id="message"
-                    placeholder="Tell us about your automation needs"
-                    rows={4}
-                    required
+                  <FormField
+                    control={form.control}
+                    name="company"
+                    render={({ field }) => (
+                      <FormItem className="space-y-2">
+                        <FormLabel>Company</FormLabel>
+                        <FormControl>
+                          <Input placeholder="Your company name" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
                   />
-                </div>
 
-                <Button
-                  type="submit"
-                  className="w-full bg-primary hover:bg-primary/90"
-                >
-                  Send Message
-                  <Send className="ml-2 h-4 w-4" />
-                </Button>
-              </form>
+                  <FormField
+                    control={form.control}
+                    name="message"
+                    render={({ field }) => (
+                      <FormItem className="space-y-2">
+                        <FormLabel>Message</FormLabel>
+                        <FormControl>
+                          <Textarea
+                            placeholder="Tell us about your automation needs"
+                            rows={4}
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                  <Button
+                    type="submit"
+                    className="w-full bg-primary hover:bg-primary/90 disabled:bg-primary/50"
+                    disabled={isLoading}
+                  >
+                    Send Message
+                    <Send className="ml-2 h-4 w-4" />
+                  </Button>
+                </form>
+              </Form>
             )}
           </motion.div>
 
@@ -144,7 +225,12 @@ export function ContactSection() {
                 </div>
                 <div>
                   <h4 className="font-medium mb-1">Email Us</h4>
-                  <p className="text-foreground/70">info@obliquepath.dev</p>
+                  <a
+                    href="mailto:info@obliquepath.dev"
+                    className="text-foreground/70"
+                  >
+                    info@obliquepath.dev
+                  </a>
                 </div>
               </motion.div>
 
@@ -152,12 +238,14 @@ export function ContactSection() {
                 whileHover={{ x: 5 }}
                 className="flex items-start gap-4"
               >
-                <div className="w-12 h-12 rounded-full bg-accent-/20 flex items-center justify-center shrink-0">
-                  <Phone className="h-5 w-5 text-accent-300" />
+                <div className="w-12 h-12 rounded-full bg-accent/10 flex items-center justify-center shrink-0">
+                  <Phone className="h-5 w-5 text-accent" />
                 </div>
                 <div>
                   <h4 className="font-medium mb-1">Call Us</h4>
-                  <p className="text-foreground/70">(+1)-647-679-0535</p>
+                  <a href="tel:+16476790535" className="text-foreground/70">
+                    (+1)-647-679-0535
+                  </a>
                 </div>
               </motion.div>
 
