@@ -1,10 +1,9 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
-import { ArrowRight, Bot, Zap, LineChart } from "lucide-react";
+import { Bot, Zap, LineChart } from "lucide-react";
 import { TypewriterEffect } from "./typewriter-effect";
-import Link from "next/link";
+import { CTA } from "../shared/cta-links";
 
 export function HeroSection() {
   return (
@@ -37,7 +36,7 @@ export function HeroSection() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.3 }}
-              className="text-4xl md:text-5xl lg:text-[55px] font-bold leading-tight"
+              className="text-3xl sm:text-4xl md:text-5xl lg:text-[55px] font-bold leading-tight"
             >
               <span className="gradient-text">
                 <TypewriterEffect />
@@ -48,34 +47,14 @@ export function HeroSection() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.4 }}
-              className="text-base md:text-lg text-foreground/80 max-w-xl"
+              className="text-sm sm:text-base md:text-lg text-foreground/80 max-w-xl"
             >
-              Obliquepath helps businesses streamline operations with smart AI
-              automation solutions — saving time, boosting productivity,
-              and driving growth.
+              We build AI-powered systems that eliminate repetitive tasks,
+              streamline operations, and help businesses—from real estate to
+              restaurants—scale without adding overhead
             </motion.p>
 
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.5 }}
-              className="flex flex-col sm:flex-row gap-4 pt-4"
-            >
-              <Link href="/book-demo">
-                <Button
-                  size="lg"
-                  className="bg-primary-600 text-white hover:bg-primary-600/90"
-                >
-                  Let&apos;s Automate Your Business
-                  <ArrowRight className="ml-2 h-4 w-4" />
-                </Button>
-              </Link>
-              <Link href="/case-studies">
-                <Button size="lg" variant="outline">
-                  See Our Solutions
-                </Button>
-              </Link>
-            </motion.div>
+            <CTA />
 
             <motion.div
               initial={{ opacity: 0 }}

@@ -7,11 +7,13 @@ import { Button } from "@/components/ui/button";
 import { Moon, Sun, Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
+import { usePathname } from "next/navigation";
 
 const navItems = [
   { name: "Home", href: "/" },
-  { name: "About", href: "/about" },
   { name: "Services", href: "/services" },
+  { name: "Pricing", href: "/pricing" },
+  { name: "About", href: "/about" },
   { name: "Case Studies", href: "/case-studies" },
   { name: "Contact", href: "/contact" },
 ];
@@ -20,6 +22,7 @@ export function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { theme, setTheme } = useTheme();
+  const pathname = usePathname();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -32,13 +35,13 @@ export function Navbar() {
   return (
     <header
       className={cn(
-        "fixed top-0 w-full z-50 transition-all duration-300 p-4 lg:p-6",
+        "fixed top-0 w-full z-50 transition-all duration-300 px-4 lg:px-16",
         isScrolled
           ? "bg-background/80 backdrop-blur-md shadow-sm py-3"
           : "bg-transparent py-5"
       )}
     >
-      <div className=" mx-auto flex items-center justify-between">
+      <div className="flex items-center justify-between">
         <Link href="/" className="flex items-center gap-2">
           <motion.div
             initial={{ opacity: 0, y: -10 }}
@@ -52,7 +55,7 @@ export function Navbar() {
         </Link>
 
         {/* Desktop Navigation */}
-        <nav className="hidden lg:flex items-center gap-6">
+        <nav className="hidden md:flex items-center gap-6">
           {navItems.map((item, index) => (
             <motion.div
               key={item.name}
@@ -62,7 +65,10 @@ export function Navbar() {
             >
               <Link
                 href={item.href}
-                className="text-foreground/80 hover:text-primary transition-colors"
+                className={cn(
+                  "text-foreground/80 hover:text-primary transition-colors",
+                  pathname === item.href && "text-primary font-medium"
+                )}
               >
                 {item.name}
               </Link>
@@ -73,14 +79,12 @@ export function Navbar() {
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.5, delay: 0.5 }}
           >
-            <Link href={"/book-demo"}>
-              <Button
-                variant="default"
-                className="bg-primary hover:bg-primary/90"
-              >
-                Book a free demo
-              </Button>
-            </Link>
+            <Button
+              variant="default"
+              className="bg-primary hover:bg-primary/90"
+            >
+              Get Started
+            </Button>
           </motion.div>
           <motion.div
             initial={{ opacity: 0, scale: 0.8 }}
@@ -101,7 +105,7 @@ export function Navbar() {
         </nav>
 
         {/* Mobile Menu Button */}
-        <div className="flex items-center lg:hidden gap-2">
+        <div className="flex items-center md:hidden gap-2">
           <Button
             variant="ghost"
             size="icon"
@@ -133,28 +137,28 @@ export function Navbar() {
               animate={{ opacity: 1, height: "auto" }}
               exit={{ opacity: 0, height: 0 }}
               transition={{ duration: 0.3 }}
-              className="absolute top-full left-0 right-0 bg-background/95 backdrop-blur-md shadow-md flex flex-col lg:hidden"
+              className="absolute top-full left-0 right-0 bg-background/95 backdrop-blur-md shadow-md flex flex-col md:hidden"
             >
               <div className="flex flex-col p-4 space-y-4">
                 {navItems.map((item) => (
                   <Link
                     key={item.name}
                     href={item.href}
-                    className="text-foreground/80 hover:text-primary py-2 transition-colors"
+                    className={cn(
+                      "text-foreground/80 hover:text-primary py-2 transition-colors",
+                      pathname === item.href && "text-primary font-medium"
+                    )}
                     onClick={() => setMobileMenuOpen(false)}
                   >
                     {item.name}
                   </Link>
                 ))}
-                <Link href={"/book-demo"}>
-                  <Button
-                    variant="default"
-                    onClick={() => setMobileMenuOpen(false)}
-                    className="mt-2 bg-primary hover:bg-primary/90"
-                  >
-                    Book a free demo
-                  </Button>
-                </Link>
+                <Button
+                  variant="default"
+                  className="mt-2 bg-primary hover:bg-primary/90"
+                >
+                  Get Started
+                </Button>
               </div>
             </motion.div>
           )}

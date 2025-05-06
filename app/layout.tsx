@@ -26,10 +26,51 @@ import { Navbar } from "@/components/shared/navbar";
 // });
 
 export const metadata: Metadata = {
-  title: "Oblique Path",
+  title: "Oblique Path | AI Automation for Growing Businesses",
   description:
-    "Obliquepath helps small to mid-sized businesses automate workflows with custom AI-powered tools. From chatbots to smart inventory systems, we deliver affordable, impactful automation to boost efficiency and save time.",
-  icons: "/icon.png",
+    "Obliquepath helps small to mid-sized businesses automate workflows with custom AI-powered tools—from chatbots to smart inventory systems—to boost efficiency and cut costs.",
+  keywords: [
+    "AI automation",
+    "business automation",
+    "custom AI solutions",
+    "workflow automation",
+    "chatbots for business",
+    "AI tools for SMBs",
+  ],
+  authors: [{ name: "ObliquePath", url: "https://obliquepath.dev" }],
+  creator: "ObliquePath",
+  robots: {
+    index: true,
+    follow: true,
+    nocache: false,
+    googleBot: {
+      index: true,
+      follow: true,
+      noimageindex: false,
+    },
+  },
+  icons: {
+    icon: "/icon.png",
+  },
+  openGraph: {
+    title: "Oblique Path | AI Automation for Growing Businesses",
+    description:
+      "Unlock your business potential with AI-driven automation—from chatbots to workflow tools. Trusted by SMBs across industries.",
+    url: "https://obliquepath.dev",
+    siteName: "ObliquePath",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Oblique Path | AI Automation for Growing Businesses",
+    description:
+      "Custom AI tools and chatbots to automate business workflows. Boost productivity, cut costs, and scale faster.",
+    // creator: "@yourTwitterHandle", // Optional
+  },
+  metadataBase: new URL("https://obliquepath.dev"),
+  alternates: {
+    canonical: "/",
+  },
 };
 
 export default function RootLayout({
