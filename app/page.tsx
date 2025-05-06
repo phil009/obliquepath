@@ -60,7 +60,7 @@ export default function Home() {
     >
       {/* Tech-inspired animated backgrounds */}
       {mounted && (
-        <>
+        <div className="fixed inset-0 z-0 overflow-hidden">
           <AnimatePresence mode="wait">
             <motion.div
               key={getBgVariant()}
@@ -87,7 +87,7 @@ export default function Home() {
 
           {/* Add ScrollWatcher to all pages */}
           <ScrollWatcher progressPosition="top" scrollToTopThreshold={300} />
-        </>
+        </div>
       )}
       <ScrollWatcher progressPosition="top" />
       <HeroSection />

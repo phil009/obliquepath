@@ -17,7 +17,7 @@ interface ScrollWatcherProps {
 export function ScrollWatcher({
   showProgress = true,
   showScrollToTop = true,
-  progressColor = "bg-gradient-to-r from-primary-300/30 to-accent-300/30",
+  progressColor = "bg-gradient-to-r from-primary-300/50 to-accent-300/60",
   progressPosition = "top",
   scrollToTopThreshold = 300,
   className,

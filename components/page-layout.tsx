@@ -57,7 +57,7 @@ export function PageLayout({ children, title, subtitle }: PageLayoutProps) {
       <div className="relative">
         {/* Tech-inspired animated backgrounds */}
         {mounted && (
-          <>
+          <div className="fixed inset-0 z-0 overflow-hidden">
             <AnimatePresence mode="wait">
               <motion.div
                 key={getBgVariant()}
@@ -84,7 +84,7 @@ export function PageLayout({ children, title, subtitle }: PageLayoutProps) {
 
             {/* Add ScrollWatcher to all pages */}
             <ScrollWatcher progressPosition="top" scrollToTopThreshold={300} />
-          </>
+          </div>
         )}
 
         {/* Main content with animations */}

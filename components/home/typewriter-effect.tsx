@@ -26,11 +26,9 @@ export function TypewriterEffect({
         }}
         onInit={(typewriter) => {
           typewriter
-            .typeString("Automate. ")
+            .typeString("Automate the Work. ")
             .pauseFor(delayAfterComplete)
-            .typeString("Accelerate. ")
-            .pauseFor(delayAfterComplete)
-            .typeString("Transform.")
+            .typeString("Accelerate the Growth.")
             .start();
         }}
       />

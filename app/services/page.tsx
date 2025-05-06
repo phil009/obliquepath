@@ -22,6 +22,7 @@ import {
   CardDescription,
 } from "@/components/ui/card";
 import Link from "next/link";
+import { CTA } from "@/components/shared/cta-links";
 
 export default function ServicesPage() {
   const serviceCategories = [
@@ -332,7 +333,7 @@ export default function ServicesPage() {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
             viewport={{ once: true }}
-            className="max-w-3xl mx-auto text-center"
+            className="max-w-3xl mx-auto text-center grid justify-items-center"
           >
             <h2 className="text-3xl font-bold mb-6">
               Ready to Transform Your Business?
@@ -341,12 +342,7 @@ export default function ServicesPage() {
               Book a free demo to see how our AI automation solutions can help
               your business save time and boost productivity.
             </p>
-            <Link href="/book-demo">
-              <Button size="lg" className="bg-primary hover:bg-primary/90">
-                Book a Free Demo
-                <ArrowRight className="ml-2 h-4 w-4" />
-              </Button>
-            </Link>
+            <CTA />
           </motion.div>
         </div>
       </section>

@@ -5,7 +5,7 @@ import { ServicesSlider } from "@/components/services-slider";
 
 export function ServicesSection() {
   return (
-    <section id="services" className="py-20 bg-background">
+    <section id="services" className="py-20 bg-background px-4 lg:px-16">
       <div className="container">
         <motion.div
           initial={{ opacity: 0, y: 20 }}

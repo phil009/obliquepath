@@ -41,11 +41,11 @@ export function FloatingElements({
       const isPrimary = Math.random() > 0.5;
       const colorClass = isPrimary
         ? isDark
-          ? "from-primary-800/20 to-primary-600/10"
-          : "from-primary-200/20 to-primary-400/10"
+          ? "from-primary-600/60 to-primary-400/40"
+          : "from-primary-800/60 to-primary-600/40"
         : isDark
-        ? "from-accent-800/20 to-accent-600/10"
-        : "from-accent-200/20 to-accent-400/10";
+        ? "from-accent-600/60 to-accent-400/40"
+        : "from-accent-800/60 to-accent-600/40";
 
       return {
         id: index,
@@ -65,7 +65,7 @@ export function FloatingElements({
   }, [count, variant, isDark]);
 
   return (
-    <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
+    <div className="absolute min-h-screen inset-0 overflow-hidden pointer-events-none z-0">
       {isInitialized &&
         elements.map((element) => (
           <motion.div
@@ -105,6 +105,7 @@ export function FloatingElements({
                 ease: "easeOut",
                 delay: element.entranceDelay,
               },
+              repeat: Infinity,
             }}
             whileInView={{
               y: [0, -30, 0],
