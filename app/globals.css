@@ -226,3 +226,32 @@ button {
 .animate-gradient {
   animation: gradient 15s ease infinite;
 }
+
+/* Swiper custom styles */
+.services-slider {
+  padding: 30px 10px 50px !important;
+}
+
+.services-slider .swiper-pagination {
+  bottom: 0 !important;
+}
+
+.services-slider .swiper-pagination-bullet {
+  width: 10px;
+  height: 10px;
+  background: hsl(var(--primary-300));
+  opacity: 0.5;
+  transition: all 0.3s ease;
+}
+
+.services-slider .swiper-pagination-bullet-active {
+  opacity: 1;
+  background: hsl(var(--primary));
+  width: 12px;
+  height: 12px;
+}
+
+.swiper-button-next::after,
+.swiper-button-prev::after {
+  display: none;
+}
