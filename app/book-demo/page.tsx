@@ -113,7 +113,7 @@ export default function BookDemoPage() {
       subtitle="See how our AI automation solutions can transform your business"
     >
       <section className="py-12 md:py-16 px-4 md:px-16">
-        <div className="container">
+        <div className="container max-w-7xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start max-w-6xl mx-auto">
             {/* Left column - Form */}
             <motion.div

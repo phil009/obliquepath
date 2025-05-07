@@ -40,7 +40,7 @@ export function PageHeader({ title, subtitle }: PageHeaderProps) {
         />
       </div>
 
-      <div className="container">
+      <div className="container max-w-7xl mx-auto">
         <motion.div
           variants={scaleUp}
           className="max-w-3xl mx-auto text-center"
