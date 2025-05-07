@@ -290,7 +290,7 @@ export default function PricingPage() {
       subtitle="Transparent pricing plans for businesses of all sizes"
     >
       <section className="py-12 md:py-16 px-4 lg:px-16">
-        <div className="container">
+        <div className="container max-w-7xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}

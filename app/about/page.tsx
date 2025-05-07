@@ -53,7 +53,7 @@ export default function AboutPage() {
   return (
     <PageLayout title="About Obliquepath">
       <section className="py-12 md:py-16 px-4 md:px-16">
-        <div className="container">
+        <div className="container max-w-7xl mx-auto">
           <div className="max-w-3xl mx-auto">
             <motion.p
               initial={{ opacity: 0, y: 20 }}

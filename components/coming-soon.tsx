@@ -1,15 +1,17 @@
-"use client"
+"use client";
 
-import { motion } from "framer-motion"
-import { Button } from "@/components/ui/button"
-import { ArrowRight, Clock } from "lucide-react"
-import Link from "next/link"
+import { motion } from "framer-motion";
+import { Button } from "@/components/ui/button";
+import { ArrowRight, Clock } from "lucide-react";
+import Link from "next/link";
 
 interface ComingSoonProps {
-  message?: string
+  message?: string;
 }
 
-export function ComingSoon({ message = "More details coming soon." }: ComingSoonProps) {
+export function ComingSoon({
+  message = "More details coming soon.",
+}: ComingSoonProps) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -22,7 +24,8 @@ export function ComingSoon({ message = "More details coming soon." }: ComingSoon
       </div>
       <h3 className="text-xl md:text-2xl font-bold mb-4">{message}</h3>
       <p className="text-foreground/70 mb-8 max-w-md">
-        We&apos;re working hard to bring you more information. In the meantime, feel free to contact us with any questions.
+        We&apos;re working hard to bring you more information. In the meantime,
+        feel free to contact us with any questions.
       </p>
       <Link href="/contact">
         <Button className="bg-primary hover:bg-primary/90">
@@ -31,5 +34,5 @@ export function ComingSoon({ message = "More details coming soon." }: ComingSoon
         </Button>
       </Link>
     </motion.div>
-  )
+  );
 }

@@ -255,3 +255,7 @@ button {
 .swiper-button-prev::after {
   display: none;
 }
+
+section {
+  margin-inline: auto;
+}
