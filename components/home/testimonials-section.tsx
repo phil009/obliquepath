@@ -99,6 +99,23 @@ const testimonials = [
       { label: "Compliance Score", value: "100%" },
     ],
   },
+  {
+    id: 6,
+    company: "Junk Cycle",
+    link: "https://junkcycle.ca/",
+    logo: "/clients-logo/junk-cycle 1.jpg",
+    quote:
+      "Before Obliq Path, we were juggling messages across five platforms. Now, everything just runs. Bookings come in, reminders go out, and we show up. Simple and solid.",
+    author: "Daniel Olayiwola",
+    position: "Owner",
+    rating: 5,
+    industry: "Junk Removal & Waste Services",
+    results: [
+      { label: "Scheduling Time Reduced", value: "-60%" },
+      { label: "No-Show Rate", value: "↓ significantly" },
+      { label: "Team Coordination", value: "↑ improved flow" },
+    ],
+  },
 ];
 
 export function TestimonialsSection() {
