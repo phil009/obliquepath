@@ -105,7 +105,6 @@ export function FloatingElements({
                 ease: "easeOut",
                 delay: element.entranceDelay,
               },
-              repeat: Infinity,
             }}
             whileInView={{
               y: [0, -30, 0],
