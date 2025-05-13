@@ -1,17 +1,53 @@
 "use client";
 
-import type React from "react";
-
 import { PageLayout } from "@/components/page-layout";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { CheckCircle, Send } from "lucide-react";
+import { CheckCircle, Send, Loader2 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useState } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import * as z from "zod";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { submitApplication } from "@/api/api";
+import { toast } from "sonner";
+
+// Define the form schema with Zod
+const formSchema = z.object({
+  name: z.string().min(2, {
+    message: "Name must be at least 2 characters.",
+  }),
+  email: z.string().email({
+    message: "Please enter a valid email address.",
+  }),
+  position: z.string().min(2, {
+    message: "Please specify a position you're interested in.",
+  }),
+  coverLetter: z.string().min(30, {
+    message: "Cover letter should be at least 30 characters.",
+  }),
+  resumeLink: z.string().url({
+    message: "Please enter a valid URL to your resume.",
+  }),
+});
+
+// Define the form values type
+type FormValues = z.infer<typeof formSchema>;
 
 export default function CareersPage() {
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [formError, setFormError] = useState<string | null>(null);
 
   const values = [
     "Passion for automation and problem-solving",
@@ -21,12 +57,35 @@ export default function CareersPage() {
     "Dedication to making technology accessible",
   ];
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    // In a real implementation, you would handle the form submission here
+  // Initialize the form with react-hook-form and zod resolver
+  const form = useForm<FormValues>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      name: "",
+      email: "",
+      position: "",
+      coverLetter: "",
+      resumeLink: "",
+    },
+  });
+
+  // Handle form submission
+  async function onSubmit(data: FormValues) {
+    setIsSubmitting(true);
+    setFormError(null);
+
+    const res = await submitApplication(data);
+    if (res === null) {
+      toast.error("Failed to submit application. Please try again later");
+      setIsSubmitting(false);
+      setIsSubmitted(false);
+      return;
+    }
+    toast.success("Application submitted successfully");
     setIsSubmitted(true);
-    setTimeout(() => setIsSubmitted(false), 3000);
-  };
+    setIsSubmitting(false);
+    form.reset();
+  }
 
   return (
     <PageLayout title="Careers at Obliquepath">
@@ -60,7 +119,7 @@ export default function CareersPage() {
                     transition={{ duration: 0.5, delay: 0.1 * (index + 1) }}
                     className="flex items-start gap-3"
                   >
-                    <CheckCircle className="h-6 w-6 text-accent-300 shrink-0 mt-0.5" />
+                    <CheckCircle className="h-6 w-6 text-accent shrink-0 mt-0.5" />
                     <p className="text-foreground/80">{value}</p>
                   </motion.div>
                 ))}
@@ -86,78 +145,147 @@ export default function CareersPage() {
                   className="flex flex-col items-center justify-center h-[320px] text-center"
                 >
                   <div className="w-16 h-16 bg-accent/10 rounded-full flex items-center justify-center mb-4">
-                    <CheckCircle className="h-8 w-8 text-accent-300" />
+                    <CheckCircle className="h-8 w-8 text-accent" />
                   </div>
                   <h4 className="text-xl font-bold mb-2">Resume Received!</h4>
                   <p className="text-foreground/70">
                     Thank you for your interest. We&apos;ll reach out if
                     there&apos;s a good fit.
                   </p>
+                  <Button
+                    variant="outline"
+                    className="mt-6"
+                    onClick={() => setIsSubmitted(false)}
+                  >
+                    Submit Another Application
+                  </Button>
                 </motion.div>
               ) : (
-                <form onSubmit={handleSubmit} className="space-y-4">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                      <label htmlFor="name" className="text-sm font-medium">
-                        Name
-                      </label>
-                      <Input id="name" placeholder="Your name" required />
-                    </div>
-                    <div className="space-y-2">
-                      <label htmlFor="email" className="text-sm font-medium">
-                        Email
-                      </label>
-                      <Input
-                        id="email"
-                        type="email"
-                        placeholder="your.email@example.com"
-                        required
+                <Form {...form}>
+                  {formError && (
+                    <Alert variant="destructive" className="mb-6">
+                      <AlertTitle>Error</AlertTitle>
+                      <AlertDescription>{formError}</AlertDescription>
+                    </Alert>
+                  )}
+
+                  <form
+                    onSubmit={form.handleSubmit(onSubmit)}
+                    className="space-y-4"
+                  >
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <FormField
+                        control={form.control}
+                        name="name"
+                        render={({ field }) => (
+                          <FormItem className="space-y-2">
+                            <FormLabel>Name</FormLabel>
+                            <FormControl>
+                              <Input
+                                placeholder="Your name"
+                                {...field}
+                                disabled={isSubmitting}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+
+                      <FormField
+                        control={form.control}
+                        name="email"
+                        render={({ field }) => (
+                          <FormItem className="space-y-2">
+                            <FormLabel>Email</FormLabel>
+                            <FormControl>
+                              <Input
+                                type="email"
+                                placeholder="your.email@example.com"
+                                {...field}
+                                disabled={isSubmitting}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
                       />
                     </div>
-                  </div>
 
-                  <div className="space-y-2">
-                    <label htmlFor="position" className="text-sm font-medium">
-                      Position of Interest
-                    </label>
-                    <Input
-                      id="position"
-                      placeholder="What role are you interested in?"
-                      required
+                    <FormField
+                      control={form.control}
+                      name="position"
+                      render={({ field }) => (
+                        <FormItem className="space-y-2">
+                          <FormLabel>Position of Interest</FormLabel>
+                          <FormControl>
+                            <Input
+                              placeholder="What role are you interested in?"
+                              {...field}
+                              disabled={isSubmitting}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
                     />
-                  </div>
 
-                  <div className="space-y-2">
-                    <label htmlFor="message" className="text-sm font-medium">
-                      Cover Letter
-                    </label>
-                    <Textarea
-                      id="message"
-                      placeholder="Tell us about yourself and why you're interested in Obliquepath"
-                      rows={4}
-                      required
+                    <FormField
+                      control={form.control}
+                      name="coverLetter"
+                      render={({ field }) => (
+                        <FormItem className="space-y-2">
+                          <FormLabel>Cover Letter</FormLabel>
+                          <FormControl>
+                            <Textarea
+                              placeholder="Tell us about yourself and why you're interested in Obliquepath"
+                              rows={4}
+                              {...field}
+                              disabled={isSubmitting}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
                     />
-                  </div>
 
-                  <div className="space-y-2">
-                    <label htmlFor="resume" className="text-sm font-medium">
-                      Resume Link
-                    </label>
-                    <Input
-                      id="resume"
-                      placeholder="Link to your resume (Google Drive, Dropbox, etc.)"
-                      required
+                    <FormField
+                      control={form.control}
+                      name="resumeLink"
+                      render={({ field }) => (
+                        <FormItem className="space-y-2">
+                          <FormLabel>Resume Link</FormLabel>
+                          <FormControl>
+                            <Input
+                              placeholder="Link to your resume (Google Drive, Dropbox, etc.)"
+                              {...field}
+                              disabled={isSubmitting}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
                     />
-                  </div>
 
-                  <Button
-                    type="submit"
-                    className="w-full bg-primary hover:bg-primary/90"
-                  >
-                    Submit Application
-                    <Send className="ml-2 h-4 w-4" />
-                  </Button>
-                </form>
+                    <Button
+                      type="submit"
+                      className="w-full bg-primary hover:bg-primary/90"
+                      disabled={isSubmitting}
+                    >
+                      {isSubmitting ? (
+                        <>
+                          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                          Submitting...
+                        </>
+                      ) : (
+                        <>
+                          Submit Application
+                          <Send className="ml-2 h-4 w-4" />
+                        </>
+                      )}
+                    </Button>
+                  </form>
+                </Form>
               )}
             </motion.div>
           </div>

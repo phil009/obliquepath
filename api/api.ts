@@ -34,3 +34,17 @@ export async function bookDemo(data: any): Promise<any | null> {
     return null;
   }
 }
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export async function submitApplication(data: any): Promise<any | null> {
+  try {
+    const response = await axiosInstance.post("/application", data);
+    return response.data;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (error: any) {
+    console.error(
+      "Error sending application:",
+      error.response?.data || error.message
+    );
+    return null;
+  }
+}
