@@ -264,9 +264,7 @@ export function ContactSection() {
                     rel="noopener noreferrer"
                     className="text-foreground/70"
                   >
-                    1204-111 Riverside Drive East,
-                    <br />
-                    Windsor On, N9a2s6
+                    Windsor, Ontario
                   </a>
                 </div>
               </motion.div>
