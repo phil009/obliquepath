@@ -57,7 +57,7 @@ export function PageLayout({ children, title, subtitle }: PageLayoutProps) {
       {/* Tech-inspired animated backgrounds */}
       {mounted && (
         <>
-          <div className="fixed inset-0 z-0 overflow-hidden">
+          <div className="fixed inset-0 -z-10 overflow-hidden">
             <AnimatePresence mode="wait">
               <motion.div
                 key={getBgVariant()}
