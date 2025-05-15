@@ -484,7 +484,7 @@ export function TestimonialsSection() {
               <motion.div
                 key={testimonial.id}
                 initial={{ opacity: 0 }}
-                animate={isInView ? { opacity: 1 } : { opacity: 0 }}
+                animate={{ opacity: 1 }}
                 transition={{ duration: 0.5, delay: 0.1 * index }}
                 className="overflow-hidden max-w-28 md:max-w-36 rounded grayscale hover:grayscale-0 transition-all duration-300"
               >

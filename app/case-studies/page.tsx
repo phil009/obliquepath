@@ -72,7 +72,7 @@ const caseStudies = [
     ctaLink: "/book-demo?service=lead-nurture",
     icon: Building,
     color: "bg-primary/10 text-primary",
-    image: "/clients-logo/hoc.svg",
+    image: "/clients-web/harbour-one.jpg",
   },
   {
     id: "junk-cycle",
@@ -119,7 +119,7 @@ const caseStudies = [
     ctaLink: "/book-demo?service=booking-automation",
     icon: Truck,
     color: "bg-accent/10 text-accent-200",
-    image: "/clients-logo/junk-cycle.jpeg",
+    image: "/clients-web/junck-cycle.jpg",
   },
   {
     id: "immaculatus-cleaning",
@@ -166,7 +166,7 @@ const caseStudies = [
     ctaLink: "/book-demo?service=scheduling-automation",
     icon: Sparkles,
     color: "bg-emerald-50 text-emerald-800",
-    image: "/clients-logo/immaculatus-cleaning.svg",
+    image: "/clients-web/immaculatus-cleaning.jpg",
   },
 ];
 
@@ -176,8 +176,8 @@ export default function CaseStudiesPage() {
       title="Case Studies"
       subtitle="Real results from real businesses using our automation solutions"
     >
-      <section className="py-12 md:py-16">
-        <div className="container">
+      <section className="py-12 md:py-16 px-4 md:px-16">
+        <div className="container max-w-7xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
