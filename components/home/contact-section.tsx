@@ -70,7 +70,7 @@ export function ContactSection() {
   return (
     <section
       id="contact"
-      className="py-20 px-4 lg:px-16 bg-background/5 overflow-hidden"
+      className="py-20 px-4 lg:px-16 bg-background/5 overflow-hidden relative "
     >
       <div className="container max-w-7xl mx-auto">
         <motion.div
