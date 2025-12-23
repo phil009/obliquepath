@@ -1,9 +1,9 @@
 "use client";
 
 import { PageLayout } from "@/components/page-layout";
-import { ComingSoon } from "@/components/coming-soon";
+// import { ComingSoon } from "@/components/coming-soon";
 import { motion } from "framer-motion";
-import { FileText, Lightbulb, TrendingUp } from "lucide-react";
+import { Lightbulb } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import Link from "next/link";
 
