@@ -5,7 +5,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { Footer } from "@/components/shared/footer";
 import { Toaster } from "@/components/ui/sonner";
 import { Navbar } from "@/components/shared/navbar";
-import AIChatWidget from "@/components/ai-chatbot";
+// import AIChatWidget from "@/components/ai-chatbot";
 
 // const inter = Inter({
 //   subsets: ["latin"],

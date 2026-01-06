@@ -18,36 +18,36 @@ export const staggerContainer = {
 
 export const fadeInUp = {
   hidden: { opacity: 0, y: 20 },
-  enter: { 
-    opacity: 1, 
+  enter: {
+    opacity: 1,
     y: 0,
     transition: {
       duration: 0.5,
-      ease: [0.22, 1, 0.36, 1],
+      ease: [0.22, 1, 0.36, 1] as const,
     }
   },
 }
 
 export const fadeInRight = {
   hidden: { opacity: 0, x: -20 },
-  enter: { 
-    opacity: 1, 
+  enter: {
+    opacity: 1,
     x: 0,
     transition: {
       duration: 0.5,
-      ease: [0.22, 1, 0.36, 1],
+      ease: [0.22, 1, 0.36, 1] as const,
     }
   },
 }
 
 export const scaleUp = {
   hidden: { opacity: 0, scale: 0.9 },
-  enter: { 
-    opacity: 1, 
+  enter: {
+    opacity: 1,
     scale: 1,
     transition: {
       duration: 0.5,
-      ease: [0.22, 1, 0.36, 1],
+      ease: [0.22, 1, 0.36, 1] as const,
     }
   },
 }
